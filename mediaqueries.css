@@ -1,103 +1,98 @@
-@media screen and (max-width: 1400px) {
-    #profile {
-      height: 83vh;
-      margin-bottom: 6rem;
-    }
-    .about-containers {
-      flex-wrap: wrap;
-    }
-    #contact,
-    #projects {
-      height: fit-content;
-    }
+/* ==========================================================================
+   Responsive overrides.
+   Sections are sized by their content now, so this file only has to handle
+   things that genuinely change shape: columns collapsing and the nav swap.
+   ========================================================================== */
+
+/* TABLET — hero and about stop being two columns */
+
+@media screen and (max-width: 60rem) {
+  #profile,
+  .section-container {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2.5rem;
+    justify-items: center;
   }
-  
-  @media screen and (max-width: 1200px) {
-    #desktop-nav {
-      display: none;
-    }
-    #hamburger-nav {
-      display: flex;
-    }
-    #experience,
-    .experience-details-container {
-      margin-top: 2rem;
-    }
-    #profile,
-    .section-container {
-      display: block;
-    }
-    .arrow {
-      display: none;
-    }
-    section,
-    .section-container {
-      height: fit-content;
-    }
-    section {
-      margin: 0 5%;
-    }
-    .section__pic-container {
-      width: 275px;
-      height: 275px;
-      margin: 0 auto 2rem;
-    }
-    .about-containers {
-      margin-top: 0;
-    }
+
+  /* centred reads better once the portrait is above the text */
+  .section__text {
+    text-align: center;
   }
-  
-  @media screen and (max-width: 600px) {
-    #contact,
-    footer {
-      height: 40vh;
-    }
-    #profile {
-      height: 83vh;
-      margin-bottom: 0;
-    }
-    article {
-      font-size: 1rem;
-    }
-    footer nav {
-      height: fit-content;
-      margin-bottom: 2rem;
-    }
-    .about-containers,
-    .contact-info-upper-container,
-    .btn-container {
-      flex-wrap: wrap;
-    }
-    .contact-info-container {
-      margin: 0;
-    }
-    .contact-info-container p,
-    .nav-links li a {
-      font-size: 1rem;
-    }
-    .experience-sub-title {
-      font-size: 1.25rem;
-    }
-    .logo {
-      font-size: 1.5rem;
-    }
-    .nav-links {
-      flex-direction: column;
-      gap: 0.5rem;
-      text-align: center;
-    }
-    .section__pic-container {
-      width: auto;
-      height: 46vw;
-      justify-content: center;
-    }
-    .section__text__p2 {
-      font-size: 1.25rem;
-    }
-    .title {
-      font-size: 2rem;
-    }
-    .text-container {
-      text-align: justify;
-    }
+
+  .section__text .title {
+    text-align: center;
   }
+
+  .section__text .section__text__p1 {
+    justify-content: center;
+  }
+
+  .btn-container,
+  #socials-container {
+    justify-content: center;
+  }
+
+  .section__pic-container {
+    max-width: 260px;
+  }
+
+  .about-pic {
+    max-width: 340px;
+  }
+}
+
+/* NAV SWAP — desktop links give way to the hamburger */
+
+@media screen and (max-width: 48rem) {
+  #desktop-nav {
+    display: none;
+  }
+
+  #hamburger-nav {
+    display: flex;
+  }
+
+  section {
+    padding: 4rem 1.25rem;
+  }
+
+  #experience .article-container {
+    gap: 0.9rem 1.25rem;
+  }
+}
+
+/* PHONE — single column throughout */
+
+@media screen and (max-width: 34rem) {
+  section {
+    padding: 3.25rem 1.1rem;
+  }
+
+  .about-containers {
+    flex-direction: column;
+  }
+
+  #experience .article-container {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .details-container {
+    padding: 1.4rem;
+  }
+
+  .contact-info-upper-container {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.25rem 1.5rem;
+  }
+
+  .btn {
+    padding: 0.75rem 1.35rem;
+  }
+
+  footer .nav-links {
+    flex-direction: column;
+    gap: 0.6rem;
+    text-align: center;
+  }
+}
