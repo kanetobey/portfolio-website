@@ -33,16 +33,18 @@ Everything you'd want to reword lives in `index.html`, in this order:
 
 | Line | What it is |
 | --- | --- |
-| 13, 24 | Your name in the top-left corner — **change both**, one is for desktop and one is for mobile |
-| 44–46 | The intro: "Hello, I'm" / your name / your job title |
-| 50 | Which file the **Download CV** button opens |
-| 101 | The Experience box — "3+ years / Support Specialist" |
-| 110 | The Education box — your degrees |
-| 115–118 | The About Me paragraph |
-| 137–198 | Skills lists, split into Development and Information Technology |
-| 218, 244, 272, 291 | Project names |
-| 321, 332 | Contact email and LinkedIn |
-| 348 | Copyright line in the footer |
+| 27, 38 | Your name in the top-left corner — **change both**, one is for desktop and one is for mobile |
+| 65–67 | The intro: "Hello, I'm" / your name / your job title |
+| 71 | Which file the **Download CV** button opens |
+| 122 | The Experience box — "3+ years / Support Specialist" |
+| 131 | The Education box — your degrees |
+| 136–139 | The About Me paragraph |
+| 158–218 | Skills lists, split into Development and Information Technology |
+| 238, 264, 292, 311 | Project names |
+| 341, 352 | Contact email and LinkedIn |
+| 368 | Copyright line in the footer |
+
+The page title and the description that shows up in Google are lines 6–7.
 
 Each `<section>` starts with a small grey line and then a big heading, like this:
 
@@ -56,24 +58,34 @@ in that order down the page.
 
 ## Two things to watch out for
 
-**The name appears twice.** Lines 13 and 24. There are two navigation bars —
+**The name appears twice.** Lines 27 and 38. There are two navigation bars —
 one shows on desktop, the other on phones — so changing one leaves the other
 stale.
 
-**Editing the nav means editing it twice too.** The desktop links are around
-line 16 and the mobile links around line 30. Both lists need the same items.
+**Editing the nav means editing it twice too.** The desktop links start at
+line 29 and the mobile links at line 52. Both lists need the same items.
 
 ## Adding a project
 
 Projects sit in rows of two. Copy an existing `details-container` block
-(lines 236–261 is a complete one) and paste it inside an
+(lines 256–281 is a complete one) and paste it inside an
 `about-containers` div, then change three things: the image path, the
 `<h2>` title, and the link URLs.
 
 If a project has no GitHub link, delete that `<a>` and leave just the Live
 Demo button — that's what Sneaky Links and Pocket Bird do.
 
-Project images go in `assets/`. The existing ones are roughly 1000px wide.
+## Images
+
+Project images go in `assets/`. Keep them around 900px wide and save as
+`.webp` — the photos here are WebP because the original PNGs were 4.6 MB
+between them, which is a slow load on phone data. To convert one:
+
+```bash
+python3 -c "from PIL import Image; im=Image.open('in.png'); im.save('out.webp','WEBP',quality=82)"
+```
+
+Icons are PNG and only need to be ~128px, since they display at 32px.
 
 ## Changing how it looks
 

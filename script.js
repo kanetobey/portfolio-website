@@ -3,6 +3,8 @@
 function toggleMenu() {
     const menu = document.querySelector(".menu-links");
     const icon = document.querySelector(".hamburger-icon");
-    menu.classList.toggle("open");
-    icon.classList.toggle("open");
+    const isOpen = menu.classList.toggle("open");
+    icon.classList.toggle("open", isOpen);
+    // keep screen readers in sync with what's on screen
+    icon.setAttribute("aria-expanded", String(isOpen));
 }
