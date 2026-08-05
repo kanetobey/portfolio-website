@@ -2,9 +2,25 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="x-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Portfolio</title>
+    <title>Kane Tobey — Information Technology Professional</title>
+    <meta name="description" content="Portfolio of Kane Tobey, an Information Technology professional in South Florida. Projects, experience, and contact details.">
+
+    <!-- shown when the site is shared in a message or on social -->
+    <meta property="og:title" content="Kane Tobey — Information Technology Professional">
+    <meta property="og:description" content="Projects, experience, and contact details.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://kanetobey-portfolio.netlify.app">
+
+    <link rel="icon" href="./assets/AiProfilePic2Circles.webp">
+
+    <meta name="theme-color" content="#faf9f6">
+
+    <!-- fonts load here rather than via @import in style.css, which blocks rendering -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
+
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="mediaqueries.css">
 </head>
@@ -23,22 +39,29 @@
     <nav id="hamburger-nav">
         <div class="logo">Kane Tobey</div>
         <div class="hamburger-menu">
-            <div class="hamburger-icon" onclick="toggleMenu()">
+            <button
+              type="button"
+              class="hamburger-icon"
+              onclick="toggleMenu()"
+              aria-label="Menu"
+              aria-expanded="false"
+              aria-controls="menu-links"
+            >
                 <span></span>
                 <span></span>
                 <span></span>
-            </div>
-            <div class="menu-links">
+            </button>
+            <ul class="menu-links" id="menu-links">
                 <li><a href="#about" onclick="toggleMenu()">About</a></li>
                 <li><a href="#experience" onclick="toggleMenu()">Experience</a></li>
                 <li><a href="#projects" onclick="toggleMenu()">Projects</a></li>
                 <li><a href="#contact" onclick="toggleMenu()">Contact</a></li>
-            </div>
+            </ul>
         </div>
     </nav>
     <section id="profile">
         <div class="section__pic-container">
-            <img src="./assets/AiProfilePic2Circles.PNG" alt="Kane Tobey profile picture">
+            <img src="./assets/AiProfilePic2Circles.webp" alt="Kane Tobey profile picture">
         </div>
         <div class="section__text">
             <p class="section__text__p1">Hello, I'm</p>
@@ -60,7 +83,7 @@
             </div>
             <div id="socials-container">
               <!-- LinkedIn Profile -->
-              <a href="https://www.linkedin.com/in/kanetobey/" target="_blank">
+              <a href="https://www.linkedin.com/in/kanetobey/" target="_blank" rel="noopener noreferrer">
                   <img 
                   src="./assets/linkedin.png" 
                   alt="My LinkedIn profile"
@@ -68,7 +91,7 @@
                   />
               </a>
               <!-- GitHub Profile -->
-              <a href="https://github.com/kanetobey/" target="_blank">
+              <a href="https://github.com/kanetobey/" target="_blank" rel="noopener noreferrer">
                   <img 
                   src="./assets/github.png" 
                   alt="My GitHub profile"
@@ -84,7 +107,7 @@
         <div class="section-container">
             <div class="section__pic-container">
                 <img 
-                src="./assets/sideProfileAiMe.png" 
+                src="./assets/sideProfileAiMe.webp" 
                 alt="Profile picture" 
                 class="about-pic"
                 >
@@ -120,11 +143,6 @@
                 </div>
             </div>
         </div>
-        <img src="assets/arrow.png" 
-        alt="Arrow icon" 
-        class="icon arrow" 
-        onclick="location.href='./#experience'"
-        >
     </section>
     <section id="experience">
         <p class="section__text__p1">Explore My</p>
@@ -132,31 +150,31 @@
         <div class="experience-details-container">
             <div class="about-containers">
                 <div class="details-container">
-                    <h2 class="experience-sub-title-1">Development</h2>
+                    <h2 class="experience-sub-title">Development</h2>
                     <div class="article-container">
                         <article>
-                            <img src="./assets/checkmark.png" alt="Experience icon" class="icon" />
+                            <img src="./assets/checkmark.png" alt="" aria-hidden="true" class="icon" />
                             <div>
                                 <h3>JavaScript</h3>
                                 <p>Basic</p>
                             </div>
                         </article>
                         <article>
-                            <img src="./assets/checkmark.png" alt="Experience icon" class="icon" />
+                            <img src="./assets/checkmark.png" alt="" aria-hidden="true" class="icon" />
                             <div>
                                 <h3>TypeScript</h3>
                                 <p>Basic</p>
                             </div>
                         </article>
                         <article>
-                            <img src="./assets/checkmark.png" alt="Experience icon" class="icon" />
+                            <img src="./assets/checkmark.png" alt="" aria-hidden="true" class="icon" />
                             <div>
                                 <h3>HTML</h3>
                                 <p>Basic</p>
                             </div>
                         </article>
                         <article>
-                            <img src="./assets/checkmark.png" alt="Experience icon" class="icon" />
+                            <img src="./assets/checkmark.png" alt="" aria-hidden="true" class="icon" />
                             <div>
                                 <h3>CSS</h3>
                                 <p>Basic</p>
@@ -165,31 +183,31 @@
                     </div>
                 </div>
                 <div class="details-container">
-                    <h2 class="experience-sub-title-2">Information Technology</h2>
+                    <h2 class="experience-sub-title">Information Technology</h2>
                     <div class="article-container">
                         <article>
-                            <img src="./assets/checkmark.png" alt="Experience icon" class="icon" />
+                            <img src="./assets/checkmark.png" alt="" aria-hidden="true" class="icon" />
                             <div>
                                 <h3>Technical Support</h3>
                                 <p>Experienced</p>
                             </div>
                         </article>
                         <article>
-                            <img src="./assets/checkmark.png" alt="Experience icon" class="icon" />
+                            <img src="./assets/checkmark.png" alt="" aria-hidden="true" class="icon" />
                             <div>
                                 <h3>Trouble-shooting</h3>
                                 <p>Experience</p>
                             </div>
                         </article>
                         <article>
-                            <img src="./assets/checkmark.png" alt="Experience icon" class="icon" />
+                            <img src="./assets/checkmark.png" alt="" aria-hidden="true" class="icon" />
                             <div>
                                 <h3>Data Analysis</h3>
                                 <p>Basic</p>
                             </div>
                         </article>
                         <article>
-                            <img src="./assets/checkmark.png" alt="Experience icon" class="icon" />
+                            <img src="./assets/checkmark.png" alt="" aria-hidden="true" class="icon" />
                             <div>
                                 <h3>Data Management</h3>
                                 <p>Basic</p>
@@ -198,10 +216,8 @@
                     </div>
                 </div>
             </div>
-            <img src="./assets/arrow.png" alt="Arrow icon" class="icon arrow" onclick="location.href='./#projects'" />
         </div>
     </section>
-</section>
 <section id="projects">
   <p class="section__text__p1">Browse My Recent</p>
   <h1 class="title">Projects</h1>
@@ -210,7 +226,7 @@
       <div class="details-container color-container">
         <div class="article-container">
           <img
-            src="./assets/NBA HangMan Display Image.png"
+            src="./assets/NBA HangMan Display Image.webp"
             alt="Project 1"
             class="project-img"
           />
@@ -219,14 +235,14 @@
         <div class="btn-container">
           <a 
             href="https://github.com/kanetobey/NBA-Hangman" 
-            target="_blank" 
+            target="_blank" rel="noopener noreferrer" 
             class="btn btn-color-2 project-btn"
           >
             Github
           </a>
           <a 
             href="https://nbahangman.netlify.app/" 
-            target="_blank" 
+            target="_blank" rel="noopener noreferrer" 
             class="btn btn-color-2 project-btn"
           >
             Live Demo
@@ -236,7 +252,7 @@
       <div class="details-container color-container">
         <div class="article-container">
           <img
-            src="./assets/QR Generator Display Image.png"
+            src="./assets/QR Generator Display Image.webp"
             alt="Project 2"
             class="project-img"
           />
@@ -245,14 +261,14 @@
         <div class="btn-container">
           <a 
             href="https://github.com/kanetobey/QR-Code-Generator" 
-            target="_blank" 
+            target="_blank" rel="noopener noreferrer" 
             class="btn btn-color-2 project-btn"
           >
             Github
           </a>
           <a
             href="https://qr-code-makr.netlify.app/"
-            target="_blank"
+            target="_blank" rel="noopener noreferrer"
             class="btn btn-color-2 project-btn"
           >
             Live Demo
@@ -264,7 +280,7 @@
       <div class="details-container color-container">
         <div class="article-container">
           <img
-            src="./assets/Sneaky Links Display Image.png"
+            src="./assets/Sneaky Links Display Image.webp"
             alt="Project 3"
             class="project-img"
           />
@@ -273,7 +289,7 @@
         <div class="btn-container">
           <a
             href="https://sneaky-links.netlify.app/"
-            target="_blank"
+            target="_blank" rel="noopener noreferrer"
             class="btn btn-color-2 project-btn"
           >
             Live Demo
@@ -292,7 +308,7 @@
         <div class="btn-container">
           <a
             href="https://pocket-bird.netlify.app/"
-            target="_blank"
+            target="_blank" rel="noopener noreferrer"
             class="btn btn-color-2 project-btn"
           >
             Live Demo
@@ -301,12 +317,6 @@
       </div>
     </div>
   </div>
-  <img
-    src="./assets/arrow.png"
-    alt="Arrow icon"
-    class="icon arrow"
-    onclick="location.href='./#contact'"
-  />
 </section>
 <section id="contact">
     <p class="section__text__p1">Get in Touch</p>
@@ -328,8 +338,8 @@
               class="icon contact-icon"
           >
           <p>
-              <!-- Added target="_blank" to open the link in a new tab -->
-              <a href="https://www.linkedin.com/in/kanetobey/" target="_blank">LinkedIn</a>
+              <!-- Added target="_blank" rel="noopener noreferrer" to open the link in a new tab -->
+              <a href="https://www.linkedin.com/in/kanetobey/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
           </p>
       </div>      
     </div>

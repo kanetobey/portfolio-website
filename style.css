@@ -1,72 +1,156 @@
-/* GENERAL */
+/* ==========================================================================
+   Kane Tobey — portfolio
+   Fonts (Manrope + JetBrains Mono) are loaded from index.html <head>.
+   Change a colour or size here once and it updates everywhere.
+   ========================================================================== */
 
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap");
+:root {
+  /* colour */
+  --bg: #faf9f6;           /* page background, a warm off-white */
+  --surface: #ffffff;      /* cards sit slightly brighter than the page */
+  --ink: #12161a;          /* headings */
+  --ink-soft: #5c6663;     /* body copy */
+  --ink-faint: #8d9693;    /* captions, muted labels */
+  --line: #e4e6e1;         /* hairline borders */
+  --accent: #0f5d52;       /* the one accent — used sparingly on purpose */
+  --accent-deep: #0a4239;  /* accent, pressed/hover */
+  --accent-wash: #e9f1ee;  /* accent at 8% — tag backgrounds */
 
-* {
-  margin: 0;
-  padding: 0;
+  /* layout */
+  --container: 68rem;
+  --radius: 14px;
+  --radius-sm: 8px;
+
+  /* type */
+  --sans: "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
-body {
-  font-family: "Poppins", sans-serif;
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 html {
   scroll-behavior: smooth;
+  /* stops the sticky nav covering a heading you just jumped to */
+  scroll-padding-top: 6rem;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 1rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
 }
 
 p {
-  color: rgb(85, 85, 85);
+  color: var(--ink-soft);
 }
 
-/* TRANSITION */
-
-a,
-.btn {
-  transition: all 300ms ease;
-}
-
-/* DESKTOP NAV */
-
-nav,
-.nav-links {
-  display: flex;
-}
-
-nav {
-  justify-content: space-around;
-  align-items: center;
-  height: 17vh;
-}
-
-.nav-links {
-  gap: 2rem;
-  list-style: none;
-  font-size: 1.5rem;
+img {
+  max-width: 100%;
 }
 
 a {
-  color: black;
+  color: var(--ink);
   text-decoration: none;
-  text-decoration-color: white;
+  transition: color 200ms ease;
 }
 
 a:hover {
-  color: grey;
-  text-decoration: underline;
-  text-underline-offset: 1rem;
-  text-decoration-color: rgb(181, 181, 181);
+  color: var(--accent);
+}
+
+/* KEYBOARD FOCUS */
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
+/* ==========================================================================
+   NAV
+   ========================================================================== */
+
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 1.1rem 1.5rem;
+  background: rgba(250, 249, 246, 0.85);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
 }
 
 .logo {
-  font-size: 2rem;
-}
-
-.logo:hover {
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
   cursor: default;
 }
 
-/* HAMBURGER MENU */
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+  font-size: 0.92rem;
+  font-weight: 500;
+}
+
+.nav-links a {
+  color: var(--ink-soft);
+  position: relative;
+  padding-bottom: 2px;
+}
+
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 1.5px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 220ms ease;
+}
+
+.nav-links a:hover {
+  color: var(--accent);
+}
+
+.nav-links a:hover::after {
+  transform: scaleX(1);
+}
+
+/* HAMBURGER */
 
 #hamburger-nav {
   display: none;
@@ -81,49 +165,24 @@ a:hover {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 24px;
-  width: 30px;
+  height: 18px;
+  width: 26px;
   cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
 }
 
 .hamburger-icon span {
   width: 100%;
   height: 2px;
-  background-color: black;
-  transition: all 0.3 ease-in-out;
-}
-
-.menu-links {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  background-color: white;
-  width: fit-content;
-  max-height: 0;
-  overflow: hidden;
-  transition: all 0.3 ease-in-out;
-}
-
-.menu-links a {
-  display: block;
-  padding: 10px;
-  text-align: center;
-  font-size: 1.5rem;
-  color: black;
-  text-decoration: none;
-  transition: all 0.3 ease-in-out;
-}
-
-.menu-links li {
-  list-style: none;
-}
-
-.menu-links.open {
-  max-height: 300px;
+  border-radius: 2px;
+  background-color: var(--ink);
+  transition: all 300ms ease-in-out;
 }
 
 .hamburger-icon.open span:first-child {
-  transform: rotate(45deg) translate(10px, 5px);
+  transform: rotate(45deg) translate(6px, 5px);
 }
 
 .hamburger-icon.open span:nth-child(2) {
@@ -131,316 +190,433 @@ a:hover {
 }
 
 .hamburger-icon.open span:last-child {
-  transform: rotate(-45deg) translate(10px, -5px);
+  transform: rotate(-45deg) translate(6px, -5px);
 }
 
-.hamburger-icon span:first-child {
-  transform: none;
+.menu-links {
+  position: absolute;
+  top: calc(100% + 0.9rem);
+  right: 0;
+  min-width: 11rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: 0 12px 32px rgba(18, 22, 26, 0.09);
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 300ms ease-in-out, opacity 200ms ease-in-out;
 }
 
-.hamburger-icon span:first-child {
+.menu-links.open {
+  max-height: 20rem;
   opacity: 1;
 }
 
-.hamburger-icon span:first-child {
-  transform: none;
+.menu-links li {
+  list-style: none;
 }
 
-/* SECTIONS */
+.menu-links a {
+  display: block;
+  padding: 0.85rem 1.25rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--ink-soft);
+}
+
+.menu-links a:hover {
+  background: var(--accent-wash);
+  color: var(--accent);
+}
+
+/* ==========================================================================
+   SECTIONS — height is driven by content, never by the viewport
+   ========================================================================== */
 
 section {
-  padding-top: 4vh;
-  height: 96vh;
-  margin: 0 10rem;
-  box-sizing: border-box;
-  min-height: fit-content;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 5.5rem 1.5rem;
 }
 
-.section-container {
-  display: flex;
-}
-
-/* PROFILE SECTION */
-
-#profile {
-  display: flex;
-  justify-content: center;
-  gap: 5rem;
-  height: 80vh;
-}
-
-.section__pic-container {
-  display: flex;
-  height: 400px;
-  width: 400px;
-  margin: auto 0;
-}
-
-.section__text {
-  align-self: center;
-  text-align: center;
-}
-
-.section__text p {
-  font-weight: 600;
-}
-
+/* the small mono line above each heading */
 .section__text__p1 {
-  text-align: center;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  justify-content: center;
 }
 
-.section__text__p2 {
-  font-size: 1.75rem;
-  margin-bottom: 1rem;
+.section__text__p1::before {
+  content: "";
+  width: 1.6rem;
+  height: 1.5px;
+  background: var(--accent);
+  opacity: 0.5;
 }
 
 .title {
-  font-size: 3rem;
+  font-size: clamp(2rem, 5vw, 2.85rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
   text-align: center;
+  margin: 0.7rem 0 3rem;
+  text-wrap: balance;
+}
+
+/* ==========================================================================
+   PROFILE / HERO
+   ========================================================================== */
+
+#profile {
+  display: grid;
+  grid-template-columns: minmax(0, 320px) minmax(0, 1fr);
+  align-items: center;
+  gap: 4rem;
+  padding-top: 4.5rem;
+  padding-bottom: 6rem;
+}
+
+/* the round portrait is the hero's alone — About keeps a rounded rectangle */
+#profile .section__pic-container {
+  aspect-ratio: 1;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--accent-wash);
+}
+
+#profile .section__pic-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* hero copy sits left, not centered — reads more deliberate */
+.section__text {
+  text-align: left;
+}
+
+.section__text .section__text__p1 {
+  justify-content: flex-start;
+}
+
+.section__text .title {
+  text-align: left;
+  font-size: clamp(2.4rem, 6vw, 3.6rem);
+  margin: 0.7rem 0 0.4rem;
+}
+
+.section__text__p2 {
+  font-family: var(--mono);
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--ink-soft);
+  margin-bottom: 2rem;
+}
+
+/* ==========================================================================
+   BUTTONS
+   ========================================================================== */
+
+.btn-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.btn {
+  font-family: var(--sans);
+  font-size: 0.92rem;
+  font-weight: 600;
+  padding: 0.8rem 1.6rem;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all 220ms ease;
+  border: 1.5px solid var(--accent);
+  white-space: nowrap;
+}
+
+/* filled */
+.btn-color-1 {
+  background: var(--accent);
+  color: #fff;
+}
+
+.btn-color-1:hover {
+  background: var(--accent-deep);
+  border-color: var(--accent-deep);
+  transform: translateY(-2px);
+}
+
+/* outlined */
+.btn-color-2 {
+  background: none;
+  color: var(--accent);
+}
+
+.btn-color-2:hover {
+  background: var(--accent-wash);
+  transform: translateY(-2px);
 }
 
 #socials-container {
   display: flex;
-  justify-content: center;
-  margin-top: 1rem;
   gap: 1rem;
+  margin-top: 1.75rem;
 }
-
-/* ICONS */
 
 .icon {
+  height: 1.5rem;
+  width: auto;
+}
+
+#socials-container .icon {
   cursor: pointer;
-  height: 2rem;
+  opacity: 0.75;
+  transition: opacity 200ms ease, transform 200ms ease;
 }
 
-/* BUTTONS */
-
-.btn-container {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
+#socials-container a:hover .icon {
+  opacity: 1;
+  transform: translateY(-2px);
 }
 
-.btn {
-  font-weight: 600;
-  transition: all 300ms ease;
-  padding: 1rem;
-  width: 8rem;
-  border-radius: 2rem;
-}
+/* ==========================================================================
+   CARDS — one shared shape for about, experience and projects
+   ========================================================================== */
 
-.btn-color-1,
-.btn-color-2 {
-  border: rgb(53, 53, 53) 0.1rem solid;
-}
-
-.btn-color-1:hover,
-.btn-color-2:hover {
-  cursor: pointer;
-}
-
-.btn-color-1,
-.btn-color-2:hover {
-  background: rgb(53, 53, 53);
-  color: white;
-}
-
-.btn-color-1:hover {
-  background: rgb(0, 0, 0);
-}
-
-.btn-color-2 {
-  background: none;
-}
-
-.btn-color-2:hover {
-  border: rgb(255, 255, 255) 0.1rem solid;
-}
-
-.btn-container {
-  gap: 1rem;
-}
-
-/* ABOUT SECTION */
-
-#about {
-  position: relative;
+.details-container {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.75rem;
+  text-align: center;
+  flex: 1;
+  transition: border-color 220ms ease, box-shadow 220ms ease,
+    transform 220ms ease;
 }
 
 .about-containers {
-  gap: 2rem;
-  margin-bottom: 2rem;
-  margin-top: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  margin-bottom: 1.75rem;
 }
 
-.about-details-container {
-  justify-content: center;
-  flex-direction: column;
+/* ABOUT */
+
+.section-container {
+  display: grid;
+  grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
+  gap: 3.5rem;
+  align-items: center;
 }
 
-.about-containers,
 .about-details-container {
   display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .about-pic {
-  border-radius: 2rem;
+  width: 100%;
+  border-radius: var(--radius);
+  display: block;
 }
 
-.arrow {
-  position: absolute;
-  right: -5rem;
-  bottom: 2.5rem;
+.details-container h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.3rem;
 }
 
-.details-container {
-  padding: 1.5rem;
-  flex: 1;
-  background: white;
-  border-radius: 2rem;
-  border: rgb(53, 53, 53) 0.1rem solid;
-  border-color: rgb(163, 163, 163);
-  text-align: center;
+.details-container .icon {
+  height: 1.6rem;
+  opacity: 0.7;
+  margin-bottom: 0.6rem;
 }
 
-.section-container {
-  gap: 4rem;
-  height: 80%;
+.details-container p {
+  font-size: 0.88rem;
+  line-height: 1.5;
 }
 
-.section__pic-container {
-  height: 400px;
-  width: 400px;
-  margin: auto 0;
+.text-container p {
+  font-size: 1rem;
+  line-height: 1.75;
 }
 
-/* EXPERIENCE SECTION */
-
-#experience {
-  position: relative;
-}
-
-.experience-sub-title {
-    color: rgb(85, 85, 85);
-    font-weight: 600;
-    font-size: 1.75rem;
-    margin-bottom: 2rem;
-  }
-
-.experience-sub-title-1 {
-  color: rgb(85, 85, 85);
-  font-weight: 600;
-  font-size: 1.75rem;
-  margin-bottom: 2rem;
-}
-
-.experience-sub-title-2 {
-    color: rgb(85, 85, 85);
-    font-weight: 600;
-    font-size: 1.75rem;
-    margin-bottom: 2rem;
-  }
+/* ==========================================================================
+   EXPERIENCE
+   ========================================================================== */
 
 .experience-details-container {
   display: flex;
-  justify-content: center;
   flex-direction: column;
 }
 
-.article-container {
-  display: flex;
+.experience-sub-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.01em;
+}
+
+/* scoped to #experience — the project cards reuse this class name for their
+   image wrapper, and a two-column grid there would halve the image */
+#experience .article-container {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem 1.5rem;
   text-align: initial;
-  flex-wrap: wrap;
-  flex-direction: row;
-  gap: 2.5rem;
-  justify-content: space-around;
 }
 
 article {
-  display: flexbox;
-  width: 10rem;
-  justify-content: space-around;
-  gap: 0.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  width: auto;
 }
 
 article .icon {
-  cursor: default;
+  height: 1.1rem;
+  margin-top: 0.28rem;
+  flex-shrink: 0;
 }
 
-/* PROJECTS SECTION */
-
-#projects {
-  position: relative;
+article h3 {
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1.35;
+  margin-bottom: 0.2rem;
 }
+
+/* proficiency reads as a small tag — a quiet nod to a passing test report */
+article p {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  background: var(--accent-wash);
+  padding: 0.15rem 0.45rem;
+  border-radius: var(--radius-sm);
+}
+
+/* ==========================================================================
+   PROJECTS
+   ========================================================================== */
 
 .color-container {
-  border-color: rgb(163, 163, 163);
-  background: rgb(250, 250, 250);
+  background: var(--surface);
+  padding: 1.25rem;
+}
+
+.color-container:hover {
+  border-color: var(--accent);
+  box-shadow: 0 14px 34px rgba(15, 93, 82, 0.1);
+  transform: translateY(-4px);
 }
 
 .project-img {
-  border-radius: 2rem;
-  width: 90%;
-  height: 90%;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  display: block;
 }
 
 .project-title {
-  margin: 1rem;
-  color: black;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 1.1rem 0 1rem;
+  letter-spacing: -0.01em;
 }
 
 .project-btn {
-  color: black;
-  border-color: rgb(163, 163, 163);
+  padding: 0.6rem 1.25rem;
+  font-size: 0.85rem;
 }
 
-/* CONTACT */
-
-#contact {
-  display: flex;
+.color-container .btn-container {
   justify-content: center;
-  flex-direction: column;
-  height: 70vh;
 }
+
+/* ==========================================================================
+   CONTACT
+   ========================================================================== */
 
 .contact-info-upper-container {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
-  border-radius: 2rem;
-  border: rgb(53, 53, 53) 0.1rem solid;
-  border-color: rgb(163, 163, 163);
-  background: (250, 250, 250);
-  margin: 2rem auto;
-  padding: 0.5rem;
+  gap: 0.5rem 2.5rem;
+  width: fit-content;
+  margin: 0 auto;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.25rem 2rem;
 }
 
 .contact-info-container {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  margin: 1rem;
+  gap: 0.6rem;
 }
 
 .contact-info-container p {
-  font-size: larger;
+  font-size: 0.95rem;
 }
 
-.contact-icon {
-  cursor: default;
+.contact-info-container .icon {
+  height: 1.25rem;
+  opacity: 0.7;
 }
 
 .email-icon {
-  height: 2.5rem;
+  height: 1.4rem;
 }
 
-/* FOOTER SECTION */
+/* ==========================================================================
+   FOOTER
+   ========================================================================== */
 
 footer {
-  height: 26vh;
-  margin: 0 1rem;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 3rem;
+  border-top: 1px solid var(--line);
+}
+
+footer nav {
+  position: static;
+  background: none;
+  backdrop-filter: none;
+  border: none;
+  justify-content: center;
+  padding: 0 0 1.25rem;
+}
+
+footer .nav-links {
+  font-size: 0.88rem;
 }
 
 footer p {
   text-align: center;
+  font-size: 0.82rem;
+  color: var(--ink-faint);
 }
