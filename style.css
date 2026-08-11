@@ -608,6 +608,12 @@ section {
   line-height: 1.5;
 }
 
+/* the About experience box lists more than one role — without this the two
+   jobs run together as four undifferentiated lines */
+#about .details-container p + p {
+  margin-top: 0.7rem;
+}
+
 .text-container p {
   font-size: 1rem;
   line-height: 1.75;
@@ -630,6 +636,15 @@ section {
   letter-spacing: -0.01em;
 }
 
+/* With three cards in the row, flex: 1 alone would shrink them all forever
+   instead of wrapping. A floor lets them go 3 across, then 2+1, then stack.
+   Scoped so the About boxes and project cards keep their own behaviour. */
+#experience .details-container {
+  min-width: 15rem;
+  container-type: inline-size;
+}
+
+
 /* scoped to #experience — the project cards reuse this class name for their
    image wrapper, and a two-column grid there would halve the image */
 #experience .article-container {
@@ -639,11 +654,35 @@ section {
   text-align: initial;
 }
 
+/* A skill's level tag is a single unbreakable word ("INTERMEDIATE"), so two
+   columns inside a narrow card push it past the edge. Let each card decide
+   from its OWN width rather than the viewport's — three-across and one-wide
+   cards need different answers at the same screen size.
+   MUST stay after the rule above: @container adds no specificity, so source
+   order is what decides. */
+@container (max-width: 23rem) {
+  #experience .article-container {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
 article {
   display: flex;
   align-items: flex-start;
   gap: 0.65rem;
   width: auto;
+  /* Grid and flex items default to min-width: auto, so they refuse to shrink
+     below their content and spill out of the card. Only bites once the cards
+     are narrow enough to matter — which three-across made true. */
+  min-width: 0;
+}
+
+article > div {
+  min-width: 0;
+}
+
+article h3 {
+  overflow-wrap: break-word;
 }
 
 article .icon {

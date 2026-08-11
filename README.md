@@ -38,15 +38,30 @@ Everything you'd want to reword lives in `index.html`, in this order:
 | 39, 77 | Your name in the top-left corner — **change both**, one is for desktop and one is for mobile |
 | 133–135 | The intro: "Hello, I'm" / your name / your job title |
 | 139 | Which file the **Download CV** button opens |
-| 190 | The Experience box — "3+ years / Support Specialist" |
-| 199 | The Education box — your degrees |
-| 204–207 | The About Me paragraph |
-| 221–281 | Skills lists, split into Development and Information Technology |
-| 300, 326, 354, 373 | Project names |
-| 397, 408 | Contact email and LinkedIn |
-| 424 | Copyright line in the footer |
+| 193–194 | The Experience box — job titles and their **start dates** (see below) |
+| 203 | The Education box — your degrees |
+| 208–211 | The About Me paragraph |
+| 225–318 | Skills lists — Development, Information Technology, Quality Assurance |
+| 337, 363, 391, 410 | Project names |
+| 434, 445 | Contact email and LinkedIn |
+| 461 | Copyright line in the footer |
 
 The page title and the description that shows up in Google are lines 6–7.
+
+### Job durations update themselves
+
+The Experience box doesn't store "3 years" as text — it stores the start date
+and works the rest out, so your current role's tenure stays right without you
+touching it:
+
+```html
+<span data-span-from="2024-11-04">1 year 9 months</span><br>Manual QA Engineer
+<span data-span-from="2021-08-02" data-span-to="2024-11-04">3 years 3 months</span><br>Support Specialist
+```
+
+Leave off `data-span-to` and it counts to today. The text inside the span is
+only a fallback for when JavaScript is off — `formatSpan()` in `script.js`
+overwrites it on load. **To change a job, edit the dates, not the words.**
 
 Each `<section>` starts with a small green label and then a big heading:
 
@@ -70,7 +85,7 @@ line 41 and the mobile links at line 119. Both lists need the same items.
 ## Adding a project
 
 Projects sit in rows of two. Copy an existing `details-container` block
-(lines 292–317 is a complete one) and paste it inside an
+(lines 329–354 is a complete one) and paste it inside an
 `about-containers` div, then change three things: the image path, the
 `<h2>` title, and the link URLs.
 
