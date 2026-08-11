@@ -58,6 +58,19 @@
                     <path d="M20.5 13.3A8.5 8.5 0 1 1 10.7 3.5a6.8 6.8 0 0 0 9.8 9.8z" />
                 </svg>
             </button>
+            <button
+              type="button"
+              class="weather-toggle"
+              aria-label="Show live local weather"
+              aria-pressed="false"
+            >
+                <svg class="icon-cloud" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M7.2 17.5a4 4 0 0 1-.3-8 5.4 5.4 0 0 1 10.3 1.2 3.4 3.4 0 0 1-.5 6.8z" />
+                </svg>
+                <svg class="icon-drops" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M8.5 20v1.6M12 19.4V21M15.5 20v1.6" />
+                </svg>
+            </button>
         </div>
     </nav>
     <nav id="hamburger-nav">
@@ -75,6 +88,19 @@
             </svg>
             <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M20.5 13.3A8.5 8.5 0 1 1 10.7 3.5a6.8 6.8 0 0 0 9.8 9.8z" />
+            </svg>
+        </button>
+        <button
+          type="button"
+          class="weather-toggle"
+          aria-label="Show live local weather"
+          aria-pressed="false"
+        >
+            <svg class="icon-cloud" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M7.2 17.5a4 4 0 0 1-.3-8 5.4 5.4 0 0 1 10.3 1.2 3.4 3.4 0 0 1-.5 6.8z" />
+            </svg>
+            <svg class="icon-drops" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M8.5 20v1.6M12 19.4V21M15.5 20v1.6" />
             </svg>
         </button>
         <div class="hamburger-menu">
@@ -398,5 +424,7 @@
     <p>Copyright &#169; Kane Tobey. All Rights Reserved.</p>
 </footer>
     <script src="script.js"></script>
+    <!-- loads after script.js so it can defer to syncThemeColor() when weather mode is off -->
+    <script src="weather.js"></script>
 </body>
 </html>
