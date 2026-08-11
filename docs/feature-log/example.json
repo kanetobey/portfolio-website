@@ -1,0 +1,74 @@
+{
+  "_comment": "The real config behind the weather-mode log. Kept as a worked example — copy it, change the stages, point shots_dir at your screenshots. Run: python3 docs/feature-log/build.py docs/feature-log/example.json",
+
+  "title": "Portfolio rebuild — visual log",
+  "eyebrow": "Build log",
+  "heading": "Portfolio rebuild, start to finish",
+  "lede": "Every screenshot below was rendered in Chromium during the work — real pages, not mockups. Four stages: a correctness pass, a weight cut, a visual refresh, and a live weather mode.",
+
+  "shots_dir": "shots",
+  "fonts": "fonts-inline.css",
+
+  "stages": [
+    {
+      "n": "01",
+      "heading": "Where it started",
+      "note": "A working site, but every section was pinned to `96vh`, which forced large empty gaps between them. Four CSS declarations were silently invalid and being discarded by the browser.",
+      "layout": "pair",
+      "shots": [
+        ["desktop", "Desktop — note the gaps between sections"],
+        ["phone", "Phone — same layout, stacked"]
+      ]
+    },
+    {
+      "n": "02",
+      "heading": "Correctness and weight",
+      "note": "No screenshots here, and that is the point — this stage deliberately changed nothing visible. It fixed things that were broken and removed weight nobody was choosing to download.",
+      "layout": "none",
+      "stats": [
+        ["4.6 MB → 296 KB", "Assets"],
+        ["446 → 408", "CSS lines"],
+        ["4", "Broken declarations"],
+        ["15 → 0", "Duplicate selectors"]
+      ],
+      "points": [
+        "**transition: all 0.3** — no unit, so the whole declaration was dropped. The hamburger menu had never actually animated.",
+        "**display: flexbox** — not a real value; the skill layout was silently falling back to block.",
+        "**background: (250,250,250)** — missing `rgb()`, so the contact box had no background at all.",
+        "**1.1 MB of images referenced by nothing**, and icons shipped at 1000×1000 to be displayed at 32 pixels."
+      ]
+    },
+    {
+      "n": "03",
+      "heading": "Visual refresh",
+      "note": "Fixed viewport heights removed, so sections size to their content. Manrope for headings and body, JetBrains Mono for labels and skill tags. One accent, used sparingly. **Page height dropped from 4701px to 3639px with nothing removed.**",
+      "layout": "pair",
+      "shots": [
+        ["final-desktop", "After — content-driven spacing"],
+        ["final-phone", "After — phone"]
+      ]
+    },
+    {
+      "n": "04",
+      "heading": "Weather mode",
+      "note": "A cloud button swaps the site into a live sky built from the visitor's real local conditions. Every state below was produced by stubbing the weather API — the only way to photograph snow and lightning from South Florida in August.",
+      "layout": "grid",
+      "callout": [
+        "**Two bugs found by looking at the output.** A bright midday sky left the near-white page text unreadable, so the sky is now veiled by its own measured luminance — noon gets a heavy scrim, midnight almost none.",
+        "And a crisp sun was showing through 97% cloud cover. The disc now fades with real cover and draws after the scrim, since the sun should be the brightest thing in frame."
+      ],
+      "shots": [
+        ["wx-clear-day", "Clear day — sun placed by real sunrise/sunset"],
+        ["wx-clear-night", "Clear night — stars fade in by sun angle"],
+        ["wx-thunderstorm", "Thunderstorm — rain plus lightning"],
+        ["wx-rain", "Rain — angle scales with real wind speed"],
+        ["wx-snow", "Snow — flakes sway instead of falling straight"],
+        ["wx-overcast", "Overcast — 95% cover leaves only diffuse glow"],
+        ["wx-fog", "Fog — haze band on the horizon"],
+        ["wx-reduced", "Reduced motion — same sky, drawn once"]
+      ]
+    }
+  ],
+
+  "footer": "Rendered in Chromium at 1440×900 and 390×844 · kanetobey/portfolio-website"
+}

@@ -27,6 +27,7 @@ Then open http://localhost:8000.
 | `script.js` | Hamburger menu + light/dark toggle |
 | `weather.js` | Weather mode — the live sky. Nothing else touches it |
 | `assets/` | Images, icons, and the resume PDF |
+| `docs/` | How new work gets written up — see [presenting-features.md](docs/presenting-features.md) |
 
 ## Where to change text
 

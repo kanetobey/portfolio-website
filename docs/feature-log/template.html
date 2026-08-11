@@ -1,0 +1,289 @@
+<!--
+  Feature log — page shell.
+
+  build.py fills the {{...}} slots and inlines every image, so the finished
+  file opens anywhere with no network. Styling lives here rather than in the
+  Python so it can be edited on its own.
+
+  The palette is lifted from the site's own style.css :root block, including
+  the dark treatment, so a log looks like it belongs to the project.
+-->
+<title>{{TITLE}}</title>
+<style>
+{{FONTS}}
+
+:root {
+  --bg: #faf9f6;
+  --surface: #ffffff;
+  --ink: #12161a;
+  --ink-soft: #5c6663;
+  --ink-faint: #8d9693;
+  --line: #e4e6e1;
+  --accent: #0f5d52;
+  --accent-wash: #e9f1ee;
+  --shadow: rgba(18, 22, 26, 0.09);
+  --sans: "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  color-scheme: light;
+}
+
+/* system preference, unless the viewer has explicitly chosen light */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #101413;
+    --surface: #171d1b;
+    --ink: #eef2f0;
+    --ink-soft: #a7b3ae;
+    --ink-faint: #7d8a85;
+    --line: #2a3330;
+    --accent: #5fbfa9;
+    --accent-wash: #16302b;
+    --shadow: rgba(0, 0, 0, 0.45);
+    color-scheme: dark;
+  }
+}
+
+/* an explicit toggle has to win in both directions */
+:root[data-theme="dark"] {
+  --bg: #101413;
+  --surface: #171d1b;
+  --ink: #eef2f0;
+  --ink-soft: #a7b3ae;
+  --ink-faint: #7d8a85;
+  --line: #2a3330;
+  --accent: #5fbfa9;
+  --accent-wash: #16302b;
+  --shadow: rgba(0, 0, 0, 0.45);
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap { max-width: 62rem; margin: 0 auto; padding: 0 1.25rem 6rem; }
+
+/* ---------- header ---------- */
+
+header {
+  padding: 4.5rem 0 3rem;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 3.5rem;
+}
+
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0;
+}
+
+.eyebrow::before {
+  content: "";
+  width: 1.6rem;
+  height: 1.5px;
+  background: var(--accent);
+  opacity: 0.5;
+}
+
+h1 {
+  font-size: clamp(2rem, 5.5vw, 3.1rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+  margin: 0.8rem 0 0.9rem;
+  text-wrap: balance;
+}
+
+.lede { color: var(--ink-soft); font-size: 1.05rem; max-width: 44rem; margin: 0; }
+
+/* ---------- stages ---------- */
+
+.stage { margin-bottom: 4.5rem; }
+
+.stage-head {
+  display: flex;
+  gap: 1rem;
+  align-items: baseline;
+  margin-bottom: 0.5rem;
+}
+
+/* numbered because a build log genuinely is a sequence — don't number
+   things that aren't ordered */
+.num {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--accent);
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  padding: 0.2rem 0.6rem;
+  flex-shrink: 0;
+}
+
+h2 {
+  font-size: clamp(1.35rem, 3.2vw, 1.75rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.note { color: var(--ink-soft); max-width: 44rem; margin: 0.5rem 0 1.6rem; }
+.note strong { color: var(--ink); font-weight: 600; }
+
+code {
+  font-family: var(--mono);
+  font-size: 0.88em;
+  background: var(--accent-wash);
+  color: var(--accent);
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+}
+
+/* ---------- screenshot layouts ---------- */
+
+.pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 1.25rem; }
+.narrow { display: grid; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); gap: 1.25rem; }
+
+.shot {
+  margin: 0;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 6px 22px var(--shadow);
+}
+
+.shot img { display: block; width: 100%; height: auto; }
+
+.shot figcaption {
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  padding: 0.7rem 0.85rem;
+  border-top: 1px solid var(--line);
+}
+
+/* ---------- stat tiles — for stages with nothing to photograph ---------- */
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.stat {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 1.1rem;
+}
+
+.stat b {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.stat span {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink-faint);
+}
+
+.stat em { font-style: normal; color: var(--accent); }
+
+/* ---------- bullet points ---------- */
+
+ul.pts {
+  margin: 0 0 1.5rem;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  max-width: 44rem;
+}
+
+ul.pts li { position: relative; padding-left: 1.05rem; color: var(--ink-soft); }
+
+ul.pts li::before {
+  content: "";
+  position: absolute;
+  left: 0.1rem;
+  top: 0.62em;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+ul.pts li strong { color: var(--ink); font-weight: 600; }
+
+/* ---------- callout — where bugs found mid-build go ---------- */
+
+.callout {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-wash);
+  padding: 1rem 1.15rem;
+  border-radius: 0 10px 10px 0;
+  margin: 1.5rem 0;
+  max-width: 44rem;
+}
+
+.callout p { margin: 0; color: var(--ink-soft); font-size: 0.95rem; }
+.callout p + p { margin-top: 0.5rem; }
+.callout strong { color: var(--ink); }
+.callout code { background: transparent; padding: 0; }
+
+footer {
+  border-top: 1px solid var(--line);
+  padding-top: 2rem;
+  color: var(--ink-faint);
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+}
+
+@media (max-width: 40rem) {
+  .pair { grid-template-columns: 1fr; }
+  header { padding: 3rem 0 2rem; }
+  .stage { margin-bottom: 3rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}
+</style>
+
+<div class="wrap">
+  <header>
+    <p class="eyebrow">{{EYEBROW}}</p>
+    <h1>{{HEADING}}</h1>
+    <p class="lede">{{LEDE}}</p>
+  </header>
+
+{{STAGES}}
+
+  <footer>{{FOOTER}}</footer>
+</div>
