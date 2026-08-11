@@ -59,6 +59,43 @@
   color-scheme: dark;
 }
 
+/* ==========================================================================
+   WEATHER MODE
+   A separate attribute from data-theme, so the two compose instead of
+   fighting: light/dark still works underneath, weather just wins while it's
+   on. Same specificity as [data-theme="dark"], so this block MUST stay
+   below it — source order is what decides.
+
+   Surfaces go translucent here rather than solid, so the sky renders
+   through the cards. That's what makes it read as a heads-up display
+   instead of just another dark theme.
+   ========================================================================== */
+
+[data-weather="on"] {
+  --bg: transparent;
+  --surface: rgba(10, 16, 32, 0.52);
+  --ink: #f1f5ff;
+  --ink-soft: #bcc9e2;
+  --ink-faint: #8d9cb8;
+  --line: rgba(190, 214, 255, 0.2);
+  --accent: #6ee9d8;
+  --accent-deep: #9ef4e7;
+  --accent-wash: rgba(110, 233, 216, 0.14);
+  --on-accent: #04201d;
+  --nav-bg: rgba(7, 12, 26, 0.5);
+  --shadow: rgba(0, 0, 0, 0.5);
+  --accent-shadow: rgba(110, 233, 216, 0.2);
+  --icon-filter: invert(1);
+
+  /* painted before the canvas draws, so there's no white flash on toggle */
+  background-color: #0b1020;
+  color-scheme: dark;
+}
+
+[data-weather="on"] body {
+  background: transparent;
+}
+
 *,
 *::before,
 *::after {
@@ -197,7 +234,8 @@ nav {
   gap: 1.25rem;
 }
 
-.theme-toggle {
+.theme-toggle,
+.weather-toggle {
   position: relative;
   display: flex;
   align-items: center;
@@ -214,13 +252,15 @@ nav {
   transition: all 220ms ease;
 }
 
-.theme-toggle:hover {
+.theme-toggle:hover,
+.weather-toggle:hover {
   background: var(--accent-wash);
   border-color: var(--accent);
   transform: translateY(-2px);
 }
 
-.theme-toggle svg {
+.theme-toggle svg,
+.weather-toggle svg {
   position: absolute;
   height: 1.1rem;
   width: 1.1rem;
@@ -245,6 +285,24 @@ nav {
 [data-theme="dark"] .theme-toggle .icon-sun {
   opacity: 0;
   transform: rotate(-90deg) scale(0.4);
+}
+
+/* WEATHER TOGGLE — the cloud fills in and the button lights up when live */
+
+.weather-toggle[aria-pressed="true"] {
+  background: var(--accent-wash);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-shadow);
+}
+
+.weather-toggle .icon-drops {
+  opacity: 0;
+  transform: translateY(-3px);
+}
+
+.weather-toggle[aria-pressed="true"] .icon-drops {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* HAMBURGER */
@@ -502,7 +560,7 @@ section {
   text-align: center;
   flex: 1;
   transition: border-color 220ms ease, box-shadow 220ms ease,
-    transform 220ms ease;
+    transform 220ms ease, background-color 450ms ease;
 }
 
 .about-containers {
@@ -719,4 +777,167 @@ footer p {
   text-align: center;
   font-size: 0.82rem;
   color: var(--ink-faint);
+}
+
+/* ==========================================================================
+   WEATHER MODE — canvas layers and the HUD
+   Created and removed by weather.js; none of this exists until the toggle
+   is pressed.
+   ========================================================================== */
+
+.weather-canvas {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;   /* the page stays fully usable underneath */
+}
+
+/* the sky sits behind everything; body background goes transparent for it */
+.weather-canvas--sky {
+  z-index: -1;
+}
+
+/* rain and low cloud pass OVER the content, including the nav (z-index 20) */
+.weather-canvas--fx {
+  z-index: 25;
+}
+
+/* cards become glass so the sky shows through them */
+[data-weather="on"] .details-container,
+[data-weather="on"] .contact-info-upper-container,
+[data-weather="on"] .menu-links,
+[data-weather="on"] nav {
+  backdrop-filter: blur(14px) saturate(1.3);
+  -webkit-backdrop-filter: blur(14px) saturate(1.3);
+}
+
+[data-weather="on"] .title,
+[data-weather="on"] .logo {
+  text-shadow: 0 2px 24px rgba(4, 10, 24, 0.55);
+}
+
+/* HUD */
+
+.weather-hud {
+  position: fixed;
+  left: 1.25rem;
+  bottom: 1.25rem;
+  z-index: 30;
+  min-width: 13rem;
+  padding: 0.9rem 1rem;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  line-height: 1.5;
+  letter-spacing: 0.08em;
+  color: var(--ink-soft);
+  background: rgba(7, 12, 26, 0.55);
+  backdrop-filter: blur(14px) saturate(1.3);
+  -webkit-backdrop-filter: blur(14px) saturate(1.3);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  animation: weather-hud-in 500ms ease both;
+}
+
+@keyframes weather-hud-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.weather-hud__place {
+  color: var(--accent);
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.weather-hud__time {
+  font-size: 1.5rem;
+  line-height: 1.15;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  margin: 0.15rem 0 0.1rem;
+}
+
+.weather-hud__cond {
+  text-transform: uppercase;
+  color: var(--ink);
+  margin-bottom: 0.6rem;
+}
+
+.weather-hud__grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.12rem 0.9rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--line);
+}
+
+.weather-hud__grid dt {
+  color: var(--ink-faint);
+}
+
+.weather-hud__grid dd {
+  color: var(--ink);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.weather-hud__slider {
+  display: block;
+  margin-top: 0.75rem;
+  padding-top: 0.65rem;
+  border-top: 1px solid var(--line);
+  color: var(--ink-faint);
+  pointer-events: auto;   /* the panel is the one interactive overlay */
+}
+
+.weather-hud__slider input {
+  display: block;
+  width: 100%;
+  margin-top: 0.4rem;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+/* the expand control only earns its place on a phone */
+.weather-hud__more {
+  display: none;
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  height: 2rem;
+  width: 2rem;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: var(--accent);
+  cursor: pointer;
+}
+
+.weather-hud__chev {
+  display: block;
+  height: 0.5rem;
+  width: 0.5rem;
+  margin: 0 auto;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: translateY(-2px) rotate(-135deg);
+  transition: transform 250ms ease;
+}
+
+.weather-hud.is-open .weather-hud__chev {
+  transform: translateY(1px) rotate(45deg);
+}
+
+/* announced once to screen readers; the ticking clock stays aria-hidden */
+.weather-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
 }

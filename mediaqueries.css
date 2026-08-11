@@ -95,4 +95,43 @@
     gap: 0.6rem;
     text-align: center;
   }
+
+  /* The HUD spans the width on a phone, and collapses to a single line so it
+     stops covering the hero buttons. Tapping the chevron opens the rest. */
+  .weather-hud {
+    left: 0.75rem;
+    right: 0.75rem;
+    bottom: 0.75rem;
+    min-width: 0;
+    padding: 0.65rem 0.85rem;
+  }
+
+  .weather-hud__more {
+    display: block;
+  }
+
+  .weather-hud__time {
+    font-size: 1.15rem;
+    display: inline-block;
+    margin: 0 0.5rem 0 0;
+  }
+
+  .weather-hud__cond {
+    display: inline-block;
+    margin-bottom: 0;
+  }
+
+  .weather-hud__grid,
+  .weather-hud__slider {
+    display: none;
+  }
+
+  .weather-hud.is-open .weather-hud__grid {
+    display: grid;
+    margin-top: 0.6rem;
+  }
+
+  .weather-hud.is-open .weather-hud__slider {
+    display: block;
+  }
 }

@@ -24,8 +24,10 @@ Then open http://localhost:8000.
 | `index.html` | All the page content and text |
 | `style.css` | All the styling — colors, fonts, spacing |
 | `mediaqueries.css` | Only the responsive rules (tablet and phone) |
-| `script.js` | The hamburger menu toggle. Nothing else |
+| `script.js` | Hamburger menu + light/dark toggle |
+| `weather.js` | Weather mode — the live sky. Nothing else touches it |
 | `assets/` | Images, icons, and the resume PDF |
+| `docs/` | How new work gets written up — see [presenting-features.md](docs/presenting-features.md) |
 
 ## Where to change text
 
@@ -33,16 +35,16 @@ Everything you'd want to reword lives in `index.html`, in this order:
 
 | Line | What it is |
 | --- | --- |
-| 29, 40 | Your name in the top-left corner — **change both**, one is for desktop and one is for mobile |
-| 67–69 | The intro: "Hello, I'm" / your name / your job title |
-| 73 | Which file the **Download CV** button opens |
-| 124 | The Experience box — "3+ years / Support Specialist" |
-| 133 | The Education box — your degrees |
-| 138–141 | The About Me paragraph |
-| 155–215 | Skills lists, split into Development and Information Technology |
-| 234, 260, 288, 307 | Project names |
-| 331, 342 | Contact email and LinkedIn |
-| 358 | Copyright line in the footer |
+| 39, 77 | Your name in the top-left corner — **change both**, one is for desktop and one is for mobile |
+| 133–135 | The intro: "Hello, I'm" / your name / your job title |
+| 139 | Which file the **Download CV** button opens |
+| 190 | The Experience box — "3+ years / Support Specialist" |
+| 199 | The Education box — your degrees |
+| 204–207 | The About Me paragraph |
+| 221–281 | Skills lists, split into Development and Information Technology |
+| 300, 326, 354, 373 | Project names |
+| 397, 408 | Contact email and LinkedIn |
+| 424 | Copyright line in the footer |
 
 The page title and the description that shows up in Google are lines 6–7.
 
@@ -58,17 +60,17 @@ in that order down the page.
 
 ## Two things to watch out for
 
-**The name appears twice.** Lines 29 and 40. There are two navigation bars —
+**The name appears twice.** Lines 39 and 77. There are two navigation bars —
 one shows on desktop, the other on phones — so changing one leaves the other
 stale.
 
 **Editing the nav means editing it twice too.** The desktop links start at
-line 31 and the mobile links at line 54. Both lists need the same items.
+line 41 and the mobile links at line 119. Both lists need the same items.
 
 ## Adding a project
 
 Projects sit in rows of two. Copy an existing `details-container` block
-(lines 252–277 is a complete one) and paste it inside an
+(lines 292–317 is a complete one) and paste it inside an
 `about-containers` div, then change three things: the image path, the
 `<h2>` title, and the link URLs.
 
@@ -124,6 +126,54 @@ projects, contact, footer. A few things worth knowing:
 
 If something looks right on desktop but broken on your phone, the fix usually
 belongs in `mediaqueries.css`, not in `style.css`.
+
+## Weather mode
+
+The cloud button in the nav swaps the site into a live sky: real time of day,
+real cloud cover, real rain and lightning for wherever the visitor is. It lives
+entirely in `weather.js`.
+
+**It is off by default and loads nothing until pressed** — no network request,
+no canvas, no animation loop. A normal visit costs exactly what it did before.
+Once someone turns it on, the choice is remembered in `localStorage`.
+
+**Where the data comes from.** [Open-Meteo](https://open-meteo.com), which needs
+no API key and allows browser requests. That's the whole reason it was picked —
+a keyed service would mean putting a secret in `weather.js` where anyone can
+read it. Location comes from the browser's geolocation prompt; if the visitor
+declines, it falls back to Boca Raton.
+
+### Changing it
+
+Everything tunable is at the top of `weather.js`:
+
+```js
+var FALLBACK = { lat: 26.3683, lon: -80.1289, label: "BOCA RATON, FL" };
+var CACHE_TTL = 10 * 60 * 1000;   // how long before it refetches
+```
+
+- **Colours** — the `SKY` array holds the gradient keyframes from deep night
+  (`t: -1`) through sunrise (`t: 0`) to noon (`t: 1`). Edit those RGB triples to
+  restyle the sky.
+- **How dark it gets** — `drawSky()` lays a scrim over the sky scaled by how
+  bright that sky actually is, so white page text stays readable at noon. If
+  text ever looks washed out, raise the `0.95` multiplier there.
+- **How much weather** — the intensity slider in the HUD, remembered per
+  visitor. The `describe()` function maps WMO weather codes to what gets drawn.
+- **Theme** — `[data-weather="on"]` in `style.css`. It's a separate attribute
+  from `data-theme`, so light/dark still works underneath; it just sits below
+  the dark block in the file so it wins on source order.
+
+### Things it deliberately does
+
+- Stops the animation loop when the tab is hidden
+- Sheds particles automatically if frames actually drop, rather than assuming
+  a device is slow
+- Draws a static sky with no particles under `prefers-reduced-motion`
+- Falls back to a clock-driven sky if the API is unreachable, rather than
+  showing a broken page
+- Keeps both canvases `pointer-events: none` so the page stays fully clickable
+  underneath the rain
 
 ## Deploying
 

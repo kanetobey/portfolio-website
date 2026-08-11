@@ -4,3 +4,9 @@
 ._*
 .Spotlight-V100
 .Trashes
+
+# Feature-log build output. build.py writes <config>.html next to its config;
+# those are generated and regenerate in a second. template.html is source and
+# stays tracked.
+docs/feature-log/example.html
+docs/feature-log/*-log.html
