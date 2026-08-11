@@ -38,13 +38,13 @@ Everything you'd want to reword lives in `index.html`, in this order:
 | 39, 77 | Your name in the top-left corner — **change both**, one is for desktop and one is for mobile |
 | 133–135 | The intro: "Hello, I'm" / your name / your job title |
 | 139 | Which file the **Download CV** button opens |
-| 193–194 | The Experience box — job titles and their **start dates** (see below) |
-| 203 | The Education box — your degrees |
-| 208–211 | The About Me paragraph |
-| 225–318 | Skills lists — Development, Information Technology, Quality Assurance |
-| 337, 363, 391, 410 | Project names |
-| 434, 445 | Contact email and LinkedIn |
-| 461 | Copyright line in the footer |
+| 194, 198 | The Experience box — job titles and their **start dates** (see below) |
+| 210 | The Education box — your degrees |
+| 221–224 | The About Me paragraph |
+| 238–331 | Skills lists — Development, Information Technology, Quality Assurance |
+| 350, 376, 404, 423 | Project names |
+| 447, 458 | Contact email and LinkedIn |
+| 474 | Copyright line in the footer |
 
 The page title and the description that shows up in Google are lines 6–7.
 
@@ -85,7 +85,7 @@ line 41 and the mobile links at line 119. Both lists need the same items.
 ## Adding a project
 
 Projects sit in rows of two. Copy an existing `details-container` block
-(lines 329–354 is a complete one) and paste it inside an
+(lines 342–367 is a complete one) and paste it inside an
 `about-containers` div, then change three things: the image path, the
 `<h2>` title, and the link URLs.
 
