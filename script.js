@@ -42,3 +42,43 @@ window
     });
 
 syncThemeColor(document.documentElement.getAttribute("data-theme"));
+
+// job durations //
+// Each span carries its own dates in the HTML (data-span-from / data-span-to),
+// so the markup stays the source of truth and the current role keeps counting
+// on its own instead of going stale like the old hardcoded "3+ years" did.
+// Leaving off data-span-to means "until now".
+
+function formatSpan(from, to) {
+    let months =
+        (to.getFullYear() - from.getFullYear()) * 12 +
+        (to.getMonth() - from.getMonth());
+
+    // A job started on the 30th isn't a month old on the 1st.
+    if (to.getDate() < from.getDate()) months--;
+    if (months < 0) months = 0;
+
+    const years = Math.floor(months / 12);
+    const rest = months % 12;
+    const parts = [];
+
+    if (years) parts.push(years + (years === 1 ? " year" : " years"));
+    if (rest) parts.push(rest + (rest === 1 ? " month" : " months"));
+
+    return parts.join(" ") || "Less than a month";
+}
+
+function updateSpans() {
+    document.querySelectorAll("[data-span-from]").forEach((el) => {
+        // parsed as local midnight — a bare "YYYY-MM-DD" is treated as UTC and
+        // can land on the previous day for anyone west of Greenwich
+        const from = new Date(el.dataset.spanFrom + "T00:00:00");
+        const to = el.dataset.spanTo
+            ? new Date(el.dataset.spanTo + "T00:00:00")
+            : new Date();
+        if (isNaN(from)) return; // bad date in the markup — leave the fallback text
+        el.textContent = formatSpan(from, to);
+    });
+}
+
+updateSpans();
