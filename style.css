@@ -608,10 +608,34 @@ section {
   line-height: 1.5;
 }
 
-/* the About experience box lists more than one role — without this the two
-   jobs run together as four undifferentiated lines */
-#about .details-container p + p {
-  margin-top: 0.7rem;
+/* A role or degree: the small mono line is the metadata (how long, which
+   qualification), the bold line is the thing itself. Reuses the label
+   language already used by section eyebrows and skill tags, so these boxes
+   read as part of the same system rather than plain stacked sentences. */
+.entry {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.entry + .entry {
+  margin-top: 0.8rem;
+}
+
+.entry__meta {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+}
+
+.entry__name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--ink);
 }
 
 .text-container p {
