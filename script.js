@@ -87,13 +87,37 @@ updateSpans();
 // "Details" turns a card over; the corner arrow (or Escape) turns it back.
 // Focus follows the flip so keyboard users land on the face they can see.
 
-function setFlip(card, flipped) {
+function setFlip(card, flipped, moveFocus = true) {
+    // one card open at a time — four open backs is a wall of text and the
+    // grid loses its shape
+    if (flipped) {
+        document.querySelectorAll(".project-card.is-flipped").forEach((other) => {
+            if (other !== card) setFlip(other, false, false);
+        });
+    }
+
     card.classList.toggle("is-flipped", flipped);
     card.querySelector(".project-flip").setAttribute("aria-expanded", String(flipped));
     card.querySelector(".project-card__back").setAttribute("aria-hidden", String(!flipped));
+    if (!moveFocus) return;
+
+    // Follow the rotation rather than a hardcoded delay, so the timing can
+    // never drift out of sync with the CSS. The timeout is only a fallback
+    // for when the transition doesn't fire (reduced motion, hidden tab).
+    const inner = card.querySelector(".project-card__inner");
     const target = card.querySelector(flipped ? ".project-unflip" : ".project-flip");
-    // wait for the outgoing face's visibility gate before moving focus
-    setTimeout(() => target.focus({ preventScroll: true }), 350);
+    let done = false;
+    const land = () => {
+        if (done) return;
+        done = true;
+        inner.removeEventListener("transitionend", onEnd);
+        target.focus({ preventScroll: true });
+    };
+    const onEnd = (event) => {
+        if (event.propertyName === "transform") land();
+    };
+    inner.addEventListener("transitionend", onEnd);
+    setTimeout(land, 600);
 }
 
 document.addEventListener("click", (event) => {
@@ -109,3 +133,62 @@ document.addEventListener("keydown", (event) => {
     const flipped = document.querySelector(".project-card.is-flipped");
     if (flipped) setFlip(flipped, false);
 });
+
+
+// scroll reveal //
+// Sections and cards rise into place once, the first time they come into
+// view. The hiding styles only exist under html.js, which the inline script
+// in the head sets — so with JS off nothing is ever hidden.
+
+function initReveal() {
+    const targets = document.querySelectorAll("[data-reveal]");
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    // No observer support, or the visitor asked for less motion: show
+    // everything immediately rather than leaving it stuck at opacity 0.
+    if (reduced || !("IntersectionObserver" in window)) {
+        targets.forEach((el) => el.classList.add("is-revealed"));
+        return;
+    }
+
+    const observer = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((entry) => {
+                if (!entry.isIntersecting) return;
+                reveal(entry.target);
+            });
+        },
+        { rootMargin: "0px 0px -8% 0px", threshold: 0.08 }
+    );
+
+    function reveal(el) {
+        el.classList.add("is-revealed");
+        observer.unobserve(el); // once each, never again
+    }
+
+    // A jump — a nav anchor, End, a fast flick — can move the viewport past a
+    // section between frames, so it never intersects and would stay invisible
+    // forever. This sweeps up anything the viewport has already passed.
+    let queued = false;
+    function sweep() {
+        queued = false;
+        let remaining = 0;
+        targets.forEach((el) => {
+            if (el.classList.contains("is-revealed")) return;
+            if (el.getBoundingClientRect().top < window.innerHeight) reveal(el);
+            else remaining++;
+        });
+        if (!remaining) window.removeEventListener("scroll", onScroll);
+    }
+    function onScroll() {
+        if (queued) return;
+        queued = true;
+        requestAnimationFrame(sweep);
+    }
+
+    targets.forEach((el) => observer.observe(el));
+    window.addEventListener("scroll", onScroll, { passive: true });
+    sweep(); // anything on screen at load shows without waiting
+}
+
+initReveal();

@@ -31,6 +31,9 @@
         var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
         var theme = saved || (prefersDark ? "dark" : "light");
         document.documentElement.setAttribute("data-theme", theme);
+        // marks that JS is running, so the reveal styles only ever apply when
+        // something is there to un-hide them again
+        document.documentElement.classList.add("js");
       })();
     </script>
 </head>
@@ -168,9 +171,9 @@
         </div>
     </section>
     <section id="about">
-        <p class="section__text__p1">Get To Know More</p>
+        <p data-reveal class="section__text__p1">Get To Know More</p>
         <h1 class="title">About Me</h1>
-        <div class="section-container">
+        <div class="section-container" data-reveal>
             <div class="section__pic-container">
                 <img 
                 src="./assets/sideProfileAiMe.webp"
@@ -228,9 +231,9 @@
         </div>
     </section>
     <section id="experience">
-        <p class="section__text__p1">Explore My</p>
+        <p data-reveal class="section__text__p1">Explore My</p>
         <h1 class="title">Experience</h1>
-        <div class="experience-details-container">
+        <div class="experience-details-container" data-reveal>
             <div class="about-containers">
                 <div class="details-container">
                     <h2 class="experience-sub-title">Development</h2>
@@ -335,11 +338,11 @@
         </div>
     </section>
 <section id="projects">
-  <p class="section__text__p1">Browse My Recent</p>
+  <p data-reveal class="section__text__p1">Browse My Recent</p>
   <h1 class="title">Projects</h1>
   <div class="experience-details-container">
     <div class="about-containers">
-      <div class="details-container color-container project-card">
+      <div class="details-container color-container project-card" data-reveal>
         <div class="project-card__inner">
           <div class="project-card__front">
             <div class="article-container">
@@ -398,7 +401,7 @@
           </div>
         </div>
       </div>
-      <div class="details-container color-container project-card">
+      <div class="details-container color-container project-card" data-reveal>
         <div class="project-card__inner">
           <div class="project-card__front">
             <div class="article-container">
@@ -459,7 +462,7 @@
       </div>
     </div>
     <div class="about-containers">
-      <div class="details-container color-container project-card">
+      <div class="details-container color-container project-card" data-reveal>
         <div class="project-card__inner">
           <div class="project-card__front">
             <div class="article-container">
@@ -511,7 +514,7 @@
           </div>
         </div>
       </div>
-      <div class="details-container color-container project-card">
+      <div class="details-container color-container project-card" data-reveal>
         <div class="project-card__inner">
           <div class="project-card__front">
             <div class="article-container">
@@ -567,9 +570,9 @@
   </div>
 </section>
 <section id="contact">
-    <p class="section__text__p1">Get in Touch</p>
+    <p data-reveal class="section__text__p1">Get in Touch</p>
     <h1 class="title">Contact Me</h1>
-    <div class="contact-info-upper-container">
+    <div class="contact-info-upper-container" data-reveal>
         <div class="contact-info-container">
             <img 
             src="./assets/email.png" 

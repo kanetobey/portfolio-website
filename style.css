@@ -30,6 +30,15 @@
   --sans: "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
 
+  /* motion — one vocabulary, so nothing on the page moves at a speed
+     nothing else moves at */
+  --t-fast: 140ms;   /* presses, icon swaps: should feel instant */
+  --t-base: 220ms;   /* hovers, colour changes */
+  --t-slow: 420ms;   /* the card flip, theme crossfade */
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);        /* general purpose */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);   /* decelerate: reveals, flips */
+  --flip-gate: 180ms;  /* when the outgoing face hands over, mid-rotation */
+
   color-scheme: light;
 }
 
@@ -113,7 +122,7 @@ html {
 body {
   background: var(--bg);
   color: var(--ink);
-  transition: background 300ms ease, color 300ms ease;
+  transition: background-color var(--t-slow) var(--ease), color var(--t-slow) var(--ease);
   font-family: var(--sans);
   font-size: 1rem;
   line-height: 1.6;
@@ -131,7 +140,7 @@ img {
 a {
   color: var(--ink);
   text-decoration: none;
-  transition: color 200ms ease;
+  transition: color var(--t-base) var(--ease);
 }
 
 a:hover {
@@ -156,6 +165,12 @@ button:focus-visible {
   *::after {
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
+    /* Delays must go too. Overriding only the duration left the card flip
+       instant but its visibility hand-off still waiting 300ms — both faces
+       hidden, so the card sat blank. */
+    transition-delay: 0s !important;
+    animation-delay: 0s !important;
+    animation-iteration-count: 1 !important;
   }
 }
 
@@ -210,7 +225,7 @@ nav {
   background: var(--accent);
   transform: scaleX(0);
   transform-origin: left;
-  transition: transform 220ms ease;
+  transition: transform var(--t-base) var(--ease-out);
 }
 
 .nav-links a:hover {
@@ -249,7 +264,8 @@ nav {
   background: none;
   color: var(--accent);
   cursor: pointer;
-  transition: all 220ms ease;
+  transition: background-color var(--t-base) var(--ease),
+    border-color var(--t-base) var(--ease), transform var(--t-base) var(--ease-out);
 }
 
 .theme-toggle:hover,
@@ -269,7 +285,7 @@ nav {
   stroke-width: 2;
   stroke-linecap: round;
   stroke-linejoin: round;
-  transition: opacity 250ms ease, transform 350ms ease;
+  transition: opacity var(--t-base) var(--ease), transform var(--t-slow) var(--ease-out);
 }
 
 .theme-toggle .icon-moon {
@@ -333,7 +349,7 @@ nav {
   height: 2px;
   border-radius: 2px;
   background-color: var(--ink);
-  transition: all 300ms ease-in-out;
+  transition: transform var(--t-base) var(--ease), opacity var(--t-fast) var(--ease);
 }
 
 .hamburger-icon.open span:first-child {
@@ -360,7 +376,7 @@ nav {
   max-height: 0;
   overflow: hidden;
   opacity: 0;
-  transition: max-height 300ms ease-in-out, opacity 200ms ease-in-out;
+  transition: max-height var(--t-slow) var(--ease-out), opacity var(--t-base) var(--ease);
 }
 
 .menu-links.open {
@@ -495,7 +511,9 @@ section {
   padding: 0.8rem 1.6rem;
   border-radius: 100px;
   cursor: pointer;
-  transition: all 220ms ease;
+  transition: background-color var(--t-base) var(--ease),
+    border-color var(--t-base) var(--ease), color var(--t-base) var(--ease),
+    transform var(--t-fast) var(--ease-out);
   border: 1.5px solid var(--accent);
   white-space: nowrap;
 }
@@ -540,7 +558,7 @@ section {
 #socials-container .icon {
   cursor: pointer;
   opacity: 0.75;
-  transition: opacity 200ms ease, transform 200ms ease;
+  transition: opacity var(--t-base) var(--ease), transform var(--t-base) var(--ease-out);
 }
 
 #socials-container a:hover .icon {
@@ -559,8 +577,8 @@ section {
   padding: 1.75rem;
   text-align: center;
   flex: 1;
-  transition: border-color 220ms ease, box-shadow 220ms ease,
-    transform 220ms ease, background-color 450ms ease;
+  transition: border-color var(--t-base) var(--ease), box-shadow var(--t-base) var(--ease),
+    transform var(--t-base) var(--ease-out), background-color var(--t-slow) var(--ease);
 }
 
 .about-containers {
@@ -790,7 +808,16 @@ article p {
 .project-card__inner {
   position: relative;
   transform-style: preserve-3d;
-  transition: transform 650ms cubic-bezier(0.35, 0, 0.2, 1);
+  transition: transform var(--t-slow) var(--ease-out);
+}
+
+/* Promote the layer on approach rather than at click time. Without this the
+   compositor builds it on the first animated frame, which cost a dropped
+   frame (33ms) at the start of every flip. */
+.project-card:hover .project-card__inner,
+.project-card:focus-within .project-card__inner,
+.project-card.is-flipped .project-card__inner {
+  will-change: transform;
 }
 
 .project-card.is-flipped .project-card__inner {
@@ -808,10 +835,11 @@ article p {
   -webkit-backface-visibility: hidden;
 }
 
-/* visibility gates keyboard focus: buttons on the hidden face must not be
-   tabbable. The delay keeps the outgoing face visible mid-rotation. */
+/* Visibility gates keyboard focus: buttons on the hidden face must not be
+   tabbable. The delay hands over mid-rotation, and reads from the same token
+   the flip does so the two can't drift apart. Reduced motion zeroes it. */
 .project-card__front {
-  transition: visibility 0s 0.3s;
+  transition: visibility 0s var(--flip-gate);
 }
 
 .project-card.is-flipped .project-card__front {
@@ -825,7 +853,7 @@ article p {
   overflow-y: auto;
   text-align: left;
   visibility: hidden;
-  transition: visibility 0s 0.3s;
+  transition: visibility 0s var(--flip-gate);
   padding-right: 0.25rem;
   display: flex;
   flex-direction: column;
@@ -851,12 +879,53 @@ article p {
   background: var(--surface);
   color: var(--accent);
   cursor: pointer;
-  transition: all 220ms ease;
+  transition: background-color var(--t-base) var(--ease),
+    border-color var(--t-base) var(--ease), transform var(--t-fast) var(--ease-out);
 }
 
 .project-unflip:hover {
   background: var(--accent-wash);
   border-color: var(--accent);
+}
+
+/* PRESS STATES — every control gives way slightly under the pointer, so a
+   click feels acknowledged before anything else happens */
+.btn:active,
+.theme-toggle:active,
+.weather-toggle:active,
+.project-unflip:active {
+  transform: scale(0.96);
+  transition-duration: var(--t-fast);
+}
+
+.btn-color-1:active,
+.btn-color-2:active {
+  transform: translateY(-1px) scale(0.98);
+}
+
+/* ==========================================================================
+   SCROLL REVEAL
+   Only armed when JS is running (html.js), so with JS off nothing is ever
+   hidden. Skipped entirely under reduced motion.
+   ========================================================================== */
+
+html.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity var(--t-slow) var(--ease-out),
+    transform var(--t-slow) var(--ease-out);
+}
+
+html.js [data-reveal].is-revealed {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.js [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 .project-unflip svg {
@@ -1154,7 +1223,7 @@ footer p {
   border-right: 1.5px solid currentColor;
   border-bottom: 1.5px solid currentColor;
   transform: translateY(-2px) rotate(-135deg);
-  transition: transform 250ms ease;
+  transition: transform var(--t-base) var(--ease);
 }
 
 .weather-hud.is-open .weather-hud__chev {
