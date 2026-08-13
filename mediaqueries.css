@@ -96,6 +96,26 @@
     text-align: center;
   }
 
+  /* the card back gains a footer link; tighten its rhythm slightly so the
+     whole back still fits the card without internal scrolling */
+  .project-back__lede {
+    font-size: 0.93rem;
+    margin-bottom: 0.7rem;
+  }
+
+  .project-back__rows {
+    gap: 0.55rem;
+    padding-top: 0.7rem;
+  }
+
+  .project-row dd {
+    font-size: 0.82rem;
+  }
+
+  .project-back__foot {
+    padding-top: 0.7rem;
+  }
+
   /* The HUD spans the width on a phone, and collapses to a single line so it
      stops covering the hero buttons. Tapping the chevron opens the rest. */
   .weather-hud {
