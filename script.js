@@ -82,3 +82,30 @@ function updateSpans() {
 }
 
 updateSpans();
+
+// project card flip //
+// "Details" turns a card over; the corner arrow (or Escape) turns it back.
+// Focus follows the flip so keyboard users land on the face they can see.
+
+function setFlip(card, flipped) {
+    card.classList.toggle("is-flipped", flipped);
+    card.querySelector(".project-flip").setAttribute("aria-expanded", String(flipped));
+    card.querySelector(".project-card__back").setAttribute("aria-hidden", String(!flipped));
+    const target = card.querySelector(flipped ? ".project-unflip" : ".project-flip");
+    // wait for the outgoing face's visibility gate before moving focus
+    setTimeout(() => target.focus({ preventScroll: true }), 350);
+}
+
+document.addEventListener("click", (event) => {
+    if (!event.target.closest) return;
+    const open = event.target.closest(".project-flip");
+    const close = event.target.closest(".project-unflip");
+    if (open) setFlip(open.closest(".project-card"), true);
+    else if (close) setFlip(close.closest(".project-card"), false);
+});
+
+document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape") return;
+    const flipped = document.querySelector(".project-card.is-flipped");
+    if (flipped) setFlip(flipped, false);
+});

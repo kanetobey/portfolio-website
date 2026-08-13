@@ -339,45 +339,79 @@
   <h1 class="title">Projects</h1>
   <div class="experience-details-container">
     <div class="about-containers">
-      <div class="details-container color-container">
-        <div class="article-container">
-          <img
-            src="./assets/NBA HangMan Display Image.webp"
-            alt="Project 1"
-            class="project-img"
-          />
-        </div>
-        <h2 class="experience-sub-title project-title">NBA Hangman</h2>
-        <div class="btn-container">
-          <a 
-            href="https://github.com/kanetobey/NBA-Hangman" 
-            target="_blank" rel="noopener noreferrer" 
+      <div class="details-container color-container project-card">
+        <div class="project-card__inner">
+          <div class="project-card__front">
+            <div class="article-container">
+              <img
+                src="./assets/NBA HangMan Display Image.webp"
+                alt="NBA Hangman — dark game board with team list, guessed letters and on-screen keyboard"
+                class="project-img"
+              />
+            </div>
+            <h2 class="experience-sub-title project-title">NBA Hangman</h2>
+            <div class="btn-container">
+          <a
+            href="https://github.com/kanetobey/NBA-Hangman"
+            target="_blank" rel="noopener noreferrer"
             class="btn btn-color-2 project-btn"
           >
             Github
           </a>
-          <a 
-            href="https://nbahangman.netlify.app/" 
-            target="_blank" rel="noopener noreferrer" 
+          <a
+            href="https://nbahangman.netlify.app/"
+            target="_blank" rel="noopener noreferrer"
             class="btn btn-color-2 project-btn"
           >
             Live Demo
           </a>
+              <button
+                type="button"
+                class="btn btn-color-2 project-btn project-flip"
+                aria-expanded="false"
+              >
+                Details
+              </button>
+            </div>
+          </div>
+          <div class="project-card__back" aria-hidden="true">
+            <button type="button" class="project-unflip" aria-label="Back to the project card">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 5.5 8 12l6.5 6.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <p class="project-back__eyebrow">NBA Hangman</p>
+            <p class="project-back__lede">Classic hangman with NBA teams &mdash; guess the name one letter at a time before five chances run out.</p>
+            <dl class="project-back__rows">
+            <div class="project-row">
+              <dt>Stack</dt>
+              <dd>JavaScript &middot; HTML &middot; CSS</dd>
+            </div>
+            <div class="project-row">
+              <dt>How it works</dt>
+              <dd>A shuffled team list feeds each round; the board, win&ndash;loss record and remaining chances update straight in the DOM.</dd>
+            </div>
+            <div class="project-row">
+              <dt>Under the hood</dt>
+              <dd>A Fisher&ndash;Yates shuffle deals every team once before any repeats, and the on-screen keyboard colours each guess right or wrong.</dd>
+            </div>
+            </dl>
+          </div>
         </div>
       </div>
-      <div class="details-container color-container">
-        <div class="article-container">
-          <img
-            src="./assets/QR Generator Display Image.webp"
-            alt="QR Code Generator — red card interface with text input, size and color options"
-            class="project-img"
-          />
-        </div>
-        <h2 class="experience-sub-title project-title">QR Code Generator</h2>
-        <div class="btn-container">
-          <a 
-            href="https://github.com/kanetobey/QR-Code-Generator" 
-            target="_blank" rel="noopener noreferrer" 
+      <div class="details-container color-container project-card">
+        <div class="project-card__inner">
+          <div class="project-card__front">
+            <div class="article-container">
+              <img
+                src="./assets/QR Generator Display Image.webp"
+                alt="QR Code Generator — red card interface with text input, size and color options"
+                class="project-img"
+              />
+            </div>
+            <h2 class="experience-sub-title project-title">QR Code Generator</h2>
+            <div class="btn-container">
+          <a
+            href="https://github.com/kanetobey/QR-Code-Generator"
+            target="_blank" rel="noopener noreferrer"
             class="btn btn-color-2 project-btn"
           >
             Github
@@ -389,20 +423,52 @@
           >
             Live Demo
           </a>
+              <button
+                type="button"
+                class="btn btn-color-2 project-btn project-flip"
+                aria-expanded="false"
+              >
+                Details
+              </button>
+            </div>
+          </div>
+          <div class="project-card__back" aria-hidden="true">
+            <button type="button" class="project-unflip" aria-label="Back to the project card">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 5.5 8 12l6.5 6.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <p class="project-back__eyebrow">QR Code Generator</p>
+            <p class="project-back__lede">Turns anything &mdash; a link, WiFi login, contact card or message &mdash; into a scannable QR code.</p>
+            <dl class="project-back__rows">
+            <div class="project-row">
+              <dt>Stack</dt>
+              <dd>JavaScript &middot; qr-code-styling</dd>
+            </div>
+            <div class="project-row">
+              <dt>How it works</dt>
+              <dd>Seven content types build the payload; colours, gradients, dot shapes and an optional centre logo style it live.</dd>
+            </div>
+            <div class="project-row">
+              <dt>Under the hood</dt>
+              <dd>Style presets, a generation history kept in localStorage, and PNG export rendered at 1024px.</dd>
+            </div>
+            </dl>
+          </div>
         </div>
       </div>
     </div>
     <div class="about-containers">
-      <div class="details-container color-container">
-        <div class="article-container">
-          <img
-            src="./assets/Sneaky Links Display Image.webp"
-            alt="Project 3"
-            class="project-img"
-          />
-        </div>
-        <h2 class="experience-sub-title project-title">Sneaky Links</h2>
-        <div class="btn-container">
+      <div class="details-container color-container project-card">
+        <div class="project-card__inner">
+          <div class="project-card__front">
+            <div class="article-container">
+              <img
+                src="./assets/Sneaky Links Display Image.webp"
+                alt="Sneaky Links — newsletter landing page with signup form and tournament tee sheet"
+                class="project-img"
+              />
+            </div>
+            <h2 class="experience-sub-title project-title">Sneaky Links</h2>
+            <div class="btn-container">
           <a
             href="https://sneaky-links.netlify.app/"
             target="_blank" rel="noopener noreferrer"
@@ -410,18 +476,50 @@
           >
             Live Demo
           </a>
+              <button
+                type="button"
+                class="btn btn-color-2 project-btn project-flip"
+                aria-expanded="false"
+              >
+                Details
+              </button>
+            </div>
+          </div>
+          <div class="project-card__back" aria-hidden="true">
+            <button type="button" class="project-unflip" aria-label="Back to the project card">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 5.5 8 12l6.5 6.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <p class="project-back__eyebrow">Sneaky Links</p>
+            <p class="project-back__lede">A weekly email of every local golf tournament in South Florida, collected and published automatically.</p>
+            <dl class="project-back__rows">
+            <div class="project-row">
+              <dt>Stack</dt>
+              <dd>Python &middot; Jinja2 &middot; GitHub Actions</dd>
+            </div>
+            <div class="project-row">
+              <dt>How it works</dt>
+              <dd>A scheduled scraper pulls tournament listings, tags each by county, and renders the newsletter and landing page from one dataset.</dd>
+            </div>
+            <div class="project-row">
+              <dt>Under the hood</dt>
+              <dd>A smoke test gates every deploy &mdash; if the render breaks, the pipeline fails instead of publishing it.</dd>
+            </div>
+            </dl>
+          </div>
         </div>
       </div>
-      <div class="details-container color-container">
-        <div class="article-container">
-          <img
-            src="./assets/Pocket Bird Display Image.png"
-            alt="Project 4"
-            class="project-img"
-          />
-        </div>
-        <h2 class="experience-sub-title project-title">Pocket Bird</h2>
-        <div class="btn-container">
+      <div class="details-container color-container project-card">
+        <div class="project-card__inner">
+          <div class="project-card__front">
+            <div class="article-container">
+              <img
+                src="./assets/Pocket Bird Display Image.png"
+                alt="Pocket Bird — Game Boy style title screen with a red bird on a green field"
+                class="project-img"
+              />
+            </div>
+            <h2 class="experience-sub-title project-title">Pocket Bird</h2>
+            <div class="btn-container">
           <a
             href="https://pocket-bird.netlify.app/"
             target="_blank" rel="noopener noreferrer"
@@ -429,6 +527,36 @@
           >
             Live Demo
           </a>
+              <button
+                type="button"
+                class="btn btn-color-2 project-btn project-flip"
+                aria-expanded="false"
+              >
+                Details
+              </button>
+            </div>
+          </div>
+          <div class="project-card__back" aria-hidden="true">
+            <button type="button" class="project-unflip" aria-label="Back to the project card">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 5.5 8 12l6.5 6.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <p class="project-back__eyebrow">Pocket Bird</p>
+            <p class="project-back__lede">A Game Boy&ndash;style game about photographing real Florida birds, not catching them.</p>
+            <dl class="project-back__rows">
+            <div class="project-row">
+              <dt>Stack</dt>
+              <dd>JavaScript &middot; Canvas &middot; Node.js</dd>
+            </div>
+            <div class="project-row">
+              <dt>How it works</dt>
+              <dd>A 240&times;160 pixel engine draws everything from code &mdash; bird sprites are generated from measurements, with no image files at all.</dd>
+            </div>
+            <div class="project-row">
+              <dt>Under the hood</dt>
+              <dd>Real species data drives rarity and calls, a shared server lets friends roam the same world, and a dependency-free test suite runs in CI on every push.</dd>
+            </div>
+            </dl>
+          </div>
         </div>
       </div>
     </div>

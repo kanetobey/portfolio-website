@@ -777,6 +777,137 @@ article p {
 }
 
 /* ==========================================================================
+   PROJECT CARD FLIP
+   "Details" turns the card over; the back reads simple-first, then deeper.
+   Only the inner element rotates — the card's own background and border
+   stay put, so the faces never need their own opaque backgrounds.
+   ========================================================================== */
+
+.project-card {
+  perspective: 1400px;
+}
+
+.project-card__inner {
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 650ms cubic-bezier(0.35, 0, 0.2, 1);
+}
+
+.project-card.is-flipped .project-card__inner {
+  transform: rotateY(180deg);
+}
+
+.project-card__front,
+.project-card__back {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* visibility gates keyboard focus: buttons on the hidden face must not be
+   tabbable. The delay keeps the outgoing face visible mid-rotation. */
+.project-card__front {
+  transition: visibility 0s 0.3s;
+}
+
+.project-card.is-flipped .project-card__front {
+  visibility: hidden;
+}
+
+.project-card__back {
+  position: absolute;
+  inset: 0;
+  transform: rotateY(180deg);
+  overflow-y: auto;
+  text-align: left;
+  visibility: hidden;
+  transition: visibility 0s 0.3s;
+  padding-right: 0.25rem;
+}
+
+.project-card.is-flipped .project-card__back {
+  visibility: visible;
+}
+
+/* the corner back button — same anatomy as the nav's round toggles */
+.project-unflip {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2rem;
+  width: 2rem;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--accent);
+  cursor: pointer;
+  transition: all 220ms ease;
+}
+
+.project-unflip:hover {
+  background: var(--accent-wash);
+  border-color: var(--accent);
+}
+
+.project-unflip svg {
+  height: 1rem;
+  width: 1rem;
+}
+
+.project-back__eyebrow {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+  padding-right: 2.4rem; /* clear the corner button */
+}
+
+/* the simplest-terms line comes first and reads largest */
+.project-back__lede {
+  font-size: 0.98rem;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--ink);
+  margin-bottom: 0.9rem;
+  padding-right: 2.4rem;
+}
+
+.project-back__rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  border-top: 1px solid var(--line);
+  padding-top: 0.9rem;
+}
+
+.project-row dt {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  background: var(--accent-wash);
+  display: inline-block;
+  padding: 0.12rem 0.45rem;
+  border-radius: var(--radius-sm);
+  margin-bottom: 0.25rem;
+}
+
+.project-row dd {
+  font-size: 0.85rem;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+/* ==========================================================================
    CONTACT
    ========================================================================== */
 
