@@ -777,6 +777,16 @@ article p {
   display: block;
 }
 
+/* Project cards sit two to a row. A row holding a single card keeps that
+   same half width instead of stretching across, so every project reads at
+   one consistent size no matter how the count divides. Scoped above the
+   34rem breakpoint, where .about-containers is still a row. */
+@media screen and (min-width: 34.0625rem) {
+  #projects .project-card {
+    flex: 0 1 calc(50% - 0.625rem);
+  }
+}
+
 .project-title {
   font-size: 1.1rem;
   font-weight: 700;
