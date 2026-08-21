@@ -656,6 +656,12 @@ section {
   color: var(--ink);
 }
 
+.entry__school {
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: var(--ink-faint);
+}
+
 .text-container p {
   font-size: 1rem;
   line-height: 1.75;
@@ -1175,11 +1181,15 @@ footer p {
 }
 
 .weather-hud__grid {
-  display: grid;
+  display: none;
   grid-template-columns: auto 1fr;
   gap: 0.12rem 0.9rem;
   padding-top: 0.6rem;
   border-top: 1px solid var(--line);
+}
+
+.weather-hud.is-open .weather-hud__grid {
+  display: grid;
 }
 
 .weather-hud__grid dt {
@@ -1193,12 +1203,16 @@ footer p {
 }
 
 .weather-hud__slider {
-  display: block;
+  display: none;
   margin-top: 0.75rem;
   padding-top: 0.65rem;
   border-top: 1px solid var(--line);
   color: var(--ink-faint);
   pointer-events: auto;   /* the panel is the one interactive overlay */
+}
+
+.weather-hud.is-open .weather-hud__slider {
+  display: block;
 }
 
 .weather-hud__slider input {
@@ -1209,9 +1223,8 @@ footer p {
   cursor: pointer;
 }
 
-/* the expand control only earns its place on a phone */
 .weather-hud__more {
-  display: none;
+  display: block;
   position: absolute;
   top: 0.5rem;
   right: 0.5rem;

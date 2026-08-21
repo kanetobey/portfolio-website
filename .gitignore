@@ -10,3 +10,6 @@
 # stays tracked.
 docs/feature-log/example.html
 docs/feature-log/*-log.html
+
+# Local Claude Code tooling
+.claude/
