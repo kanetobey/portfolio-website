@@ -126,10 +126,6 @@
     padding: 0.65rem 0.85rem;
   }
 
-  .weather-hud__more {
-    display: block;
-  }
-
   .weather-hud__time {
     font-size: 1.15rem;
     display: inline-block;
@@ -141,17 +137,7 @@
     margin-bottom: 0;
   }
 
-  .weather-hud__grid,
-  .weather-hud__slider {
-    display: none;
-  }
-
   .weather-hud.is-open .weather-hud__grid {
-    display: grid;
     margin-top: 0.6rem;
-  }
-
-  .weather-hud.is-open .weather-hud__slider {
-    display: block;
   }
 }

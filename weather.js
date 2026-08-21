@@ -20,6 +20,7 @@
 
   var STORE_KEY = "weather";           // "on" / "off"
   var INTENSITY_KEY = "weather:intensity";
+  var HUD_KEY = "weather:hud";         // "open" / "closed"
   var CACHE_KEY = "weather:cache";
   var CACHE_TTL = 10 * 60 * 1000;      // 10 minutes
   var GEO_TIMEOUT = 7000;
@@ -565,12 +566,21 @@
       '<input type="range" min="35" max="200" step="5">' +
       "</label>";
 
-    // On a phone the panel would otherwise sit on top of the hero buttons,
-    // so the detail rows collapse behind this until asked for.
+    // The detail rows collapse behind the chevron. Desktop starts open;
+    // a phone starts closed (the full panel would sit on top of the hero
+    // buttons); a remembered choice beats both defaults.
     var more = el.hud.querySelector(".weather-hud__more");
+    var savedHud = null;
+    try { savedHud = localStorage.getItem(HUD_KEY); } catch (e) {}
+    var open = savedHud
+      ? savedHud === "open"
+      : window.matchMedia("(min-width: 34.0625rem)").matches;
+    el.hud.classList.toggle("is-open", open);
+    more.setAttribute("aria-expanded", String(open));
     more.addEventListener("click", function () {
-      var open = el.hud.classList.toggle("is-open");
-      more.setAttribute("aria-expanded", String(open));
+      var nowOpen = el.hud.classList.toggle("is-open");
+      more.setAttribute("aria-expanded", String(nowOpen));
+      try { localStorage.setItem(HUD_KEY, nowOpen ? "open" : "closed"); } catch (e) {}
     });
 
     // Screen readers get one clear announcement instead of a ticking clock
