@@ -34,10 +34,17 @@
      nothing else moves at */
   --t-fast: 140ms;   /* presses, icon swaps: should feel instant */
   --t-base: 220ms;   /* hovers, colour changes */
-  --t-slow: 420ms;   /* the card flip, theme crossfade */
+  --t-slow: 420ms;   /* theme crossfade */
+  --t-flip: 650ms;   /* the card flip: long enough to read as one motion */
   --ease: cubic-bezier(0.4, 0, 0.2, 1);        /* general purpose */
-  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);   /* decelerate: reveals, flips */
-  --flip-gate: 180ms;  /* when the outgoing face hands over, mid-rotation */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);   /* decelerate: reveals */
+  /* The flip accelerates in and settles out (easeInOutCubic). A decelerate
+     curve here burned through most of the rotation in a few frames, which
+     read as a choppy snap rather than a turn. */
+  --ease-flip: cubic-bezier(0.645, 0.045, 0.355, 1);
+  /* Face hand-over at 90°. Derived, not repeated: the in-out curve crosses
+     50% progress at 50% time, so retuning --t-flip keeps the gate on beat. */
+  --flip-gate: calc(var(--t-flip) / 2);
 
   color-scheme: light;
 }
@@ -824,7 +831,7 @@ article p {
 .project-card__inner {
   position: relative;
   transform-style: preserve-3d;
-  transition: transform var(--t-slow) var(--ease-out);
+  transition: transform var(--t-flip) var(--ease-flip);
 }
 
 /* Promote the layer on approach rather than at click time. Without this the
