@@ -42,9 +42,9 @@ Everything you'd want to reword lives in `index.html`, in this order:
 | 210 | The Education box — your degrees |
 | 221–224 | The About Me paragraph |
 | 238–331 | Skills lists — Development, Information Technology, Quality Assurance |
-| 350, 376, 404, 423 | Project names |
-| 447, 458 | Contact email and LinkedIn |
-| 474 | Copyright line in the footer |
+| 357, 424, 485, 544, 598, 650 | Project names (each name also repeats on the card's back) |
+| 705, 716 | Contact email and LinkedIn |
+| 732 | Copyright line in the footer |
 
 The page title and the description that shows up in Google are lines 6–7.
 
@@ -85,12 +85,18 @@ line 41 and the mobile links at line 119. Both lists need the same items.
 ## Adding a project
 
 Projects sit in rows of two. Copy an existing `details-container` block
-(lines 342–367 is a complete one) and paste it inside an
-`about-containers` div, then change three things: the image path, the
-`<h2>` title, and the link URLs.
+(lines 414–474, the NBA Hangman card, is a complete simple one) and paste
+it inside an `about-containers` div, then change three things: the image
+path, the `<h2>` title, and the link URLs.
 
 If a project has no GitHub link, delete that `<a>` and leave just the Live
 Demo button — that's what Sneaky Links and Pocket Bird do.
+
+A card's back can also embed the live project in a phone-shaped frame — the
+Cuh Golf card does this with its `project-preview` block. It's optional:
+only copy it for a project whose live URL works well at phone size. The
+game only downloads when someone actually opens the preview, and on phones
+it stays collapsed behind a button so it can't hijack scrolling.
 
 ## Images
 

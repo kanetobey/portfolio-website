@@ -192,3 +192,42 @@ function initReveal() {
 }
 
 initReveal();
+
+// playable preview //
+// A card back can embed its live project in a phone-shaped frame. The iframe
+// only gets its src the first time the preview is shown, so visitors who
+// never open it never download the game. On wide screens flipping the card
+// opens it automatically; on phones it stays collapsed behind the button so
+// the embedded game can't capture the page scroll.
+
+function setPreview(preview, open) {
+    const stage = preview.querySelector(".project-preview__stage");
+    const toggle = preview.querySelector(".project-preview__toggle");
+    if (open) {
+        const frame = stage.querySelector("iframe[data-src]");
+        if (frame) {
+            frame.src = frame.dataset.src;
+            frame.removeAttribute("data-src");
+        }
+    }
+    stage.hidden = !open;
+    toggle.setAttribute("aria-expanded", String(open));
+    toggle.textContent = open ? "Hide playable preview" : "Show playable preview";
+}
+
+document.addEventListener("click", (event) => {
+    if (!event.target.closest) return;
+    const toggle = event.target.closest(".project-preview__toggle");
+    if (toggle) {
+        const preview = toggle.closest(".project-preview");
+        setPreview(preview, preview.querySelector(".project-preview__stage").hidden);
+        return;
+    }
+    // flipping a card open on a wide screen expands its preview by itself
+    const flip = event.target.closest(".project-flip");
+    if (!flip) return;
+    const preview = flip.closest(".project-card").querySelector(".project-preview");
+    if (preview && window.matchMedia("(min-width: 48.0625rem)").matches) {
+        setPreview(preview, true);
+    }
+});
